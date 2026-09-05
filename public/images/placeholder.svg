@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4f46e5;stop-opacity:0.9" />
+      <stop offset="50%" style="stop-color:#9333ea;stop-opacity:0.85" />
+      <stop offset="100%" style="stop-color:#ec4899;stop-opacity:0.9" />
+    </linearGradient>
+    <radialGradient id="spark" cx="70%" cy="30%" r="50%">
+      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:0.4" />
+      <stop offset="100%" style="stop-color:#fbbf24;stop-opacity:0" />
+    </radialGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#grad)" />
+  <circle cx="70%" cy="30%" r="350" fill="url(#spark)" />
+  <g transform="translate(425, 250)" text-anchor="middle" fill="#ffffff" opacity="0.95">
+    <path d="M-20 -30 C-10 -50, 10 -50, 20 -30 C35 -10, 15 15, 0 35 C-15 15, -35 -10, -20 -30 Z" fill="#ffffff" opacity="0.2" transform="scale(2)"/>
+    <text y="5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="28" font-weight="700" letter-spacing="2">FUNFILLIA</text>
+    <text y="35" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" opacity="0.8" letter-spacing="1">DISCOVER STORIES &amp; INSPIRATION</text>
+  </g>
+</svg>

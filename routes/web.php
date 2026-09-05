@@ -1,0 +1,47 @@
+<?php
+
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MediaProxyController;
+use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\SitemapController;
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes for Funfillia Website
+|--------------------------------------------------------------------------
+*/
+
+// Home
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Media Proxy (Secure obfuscated streaming with local caching)
+Route::get('/media/{token}', [MediaProxyController::class, 'stream'])->name('media.proxy');
+
+// Search
+Route::get('/search', [SearchController::class, 'index'])->name('search');
+
+// Blog Detail & Comments
+Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
+Route::post('/blog/{slug}/comment', [BlogController::class, 'comment'])->name('blog.comment');
+
+// Categories & Subcategories
+Route::get('/category/{slug}', [CategoryController::class, 'category'])->name('category.show');
+Route::get('/subcategory/{slug}', [CategoryController::class, 'subCategory'])->name('subcategory.show');
+
+// Newsletter Subscription
+Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
+
+// SEO Sitemap
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
+
+// Informational & Legal Pages
+Route::get('/about-us', [\App\Http\Controllers\PageController::class, 'about'])->name('pages.about');
+Route::get('/contact-us', [\App\Http\Controllers\PageController::class, 'contact'])->name('pages.contact');
+Route::post('/contact-us/submit', [\App\Http\Controllers\PageController::class, 'contactSubmit'])->name('pages.contact.submit');
+Route::get('/privacy-policy', [\App\Http\Controllers\PageController::class, 'privacy'])->name('pages.privacy');
+Route::get('/terms-and-conditions', [\App\Http\Controllers\PageController::class, 'terms'])->name('pages.terms');
+Route::get('/cookie-policy', [\App\Http\Controllers\PageController::class, 'cookies'])->name('pages.cookies');
