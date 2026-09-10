@@ -117,6 +117,9 @@
                 {!! $blog['content'] ?? '' !!}
             </div>
 
+            <!-- In-Article Horizontal Ad -->
+            <x-ad-banner placement="horizontal_ad" />
+
             <!-- Tags -->
             @php
                 $tags = !empty($blog['tags_array']) ? $blog['tags_array'] : (is_array($blog['tags'] ?? null) ? $blog['tags'] : explode(',', $blog['tags'] ?? ''));
@@ -264,6 +267,9 @@
                     </ul>
                 </div>
 
+                <!-- Sidebar Vertical Display Ad -->
+                <x-ad-banner placement="vertical_ad" />
+
                 <!-- Recent Stories Widget (Reduced thumbnail size and clean title) -->
                 @if(!empty($recentBlogs) && count($recentBlogs) > 0)
                     <div class="rounded-3xl bg-white dark:bg-slate-900 p-5 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
@@ -278,8 +284,16 @@
                         </div>
                     </div>
                 @endif
+
+                <!-- Sidebar Multiplex Grid Ad -->
+                <x-ad-banner placement="vertical_multiplex" />
             </div>
         </aside>
+    </div>
+
+    <!-- Bottom Horizontal Multiplex Ad -->
+    <div class="max-w-6xl mx-auto pt-8">
+        <x-ad-banner placement="horizontal_multiplex" />
     </div>
 
     <!-- Related Articles Grid -->

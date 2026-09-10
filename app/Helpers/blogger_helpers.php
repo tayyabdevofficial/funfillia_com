@@ -11,8 +11,8 @@ if (!function_exists('blogger_media_url')) {
             return asset($fallback);
         }
 
-        // Check if rawPath contains a token (e.g. /media/{token} or /website/media/{token})
-        if (preg_match('#/(?:website/)?media/([a-zA-Z0-9_\-\.]+)#', $rawPath, $matches)) {
+        // Check if rawPath contains a token (e.g. /media/{token}, /website/media/{token}, /api/v1/website/media/{token})
+        if (preg_match('#(?:^|/)media/([a-zA-Z0-9_\-\.]+)#', $rawPath, $matches)) {
             return url('/media/' . $matches[1]);
         }
 

@@ -60,9 +60,21 @@
         <meta name="twitter:card" content="summary_large_image">
     @endif
 
-    <!-- Favicon -->
+    <!-- Multi-Device Favicons & Manifest -->
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
-    <link rel="apple-touch-icon" href="{{ asset('images/favicon.png') }}">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('favicon-96x96.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
+    <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+    <meta name="theme-color" content="#6366f1">
+
+    <!-- Global AdSense & AMP Auto-Ads Head Scripts -->
+    @if($adsEnabled ?? false)
+        {!! $websiteAds['head_script'] ?? '' !!}
+        {!! $websiteAds['amp_head_script'] ?? '' !!}
+    @endif
 
     @yield('extra_head')
 
@@ -75,11 +87,21 @@
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 antialiased selection:bg-indigo-500 selection:text-white">
 
+    <!-- AMP Auto-Ads Body Tag Injection -->
+    @if(($adsEnabled ?? false) && !empty($websiteAds['amp_body_code']))
+        {!! $websiteAds['amp_body_code'] !!}
+    @endif
+
     <!-- Reading Progress Bar (for article detail pages) -->
     <div id="reading-progress-bar" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-rose-500 via-purple-500 to-indigo-600 z-50 transition-all duration-75 w-0 pointer-events-none"></div>
 
     <!-- Header Navigation -->
     <x-header :categories="$allCategories ?? []" :trendingTopics="$trendingTopics ?? []" />
+
+    <!-- Top Header Ad Placement -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <x-ad-banner placement="header" />
+    </div>
 
     <!-- Main Content Area -->
     <main class="flex-1">
@@ -88,6 +110,11 @@
 
     <!-- Global Search Modal (Ctrl+K) -->
     <x-search-modal />
+
+    <!-- Footer Ad Placement -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <x-ad-banner placement="footer" />
+    </div>
 
     <!-- Footer -->
     <x-footer :categories="$allCategories ?? []" />

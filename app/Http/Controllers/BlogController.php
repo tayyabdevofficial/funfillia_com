@@ -42,6 +42,26 @@ class BlogController extends Controller
         ]);
     }
 
+    public function random(Request $request)
+    {
+        $homeData = $this->client->getHomeData();
+        $candidates = [];
+
+        foreach (['latestBlogs', 'featuredBlogs', 'trendingBlogs', 'todayTopBlogs'] as $key) {
+            if (!empty($homeData[$key]) && is_array($homeData[$key])) {
+                $candidates = array_merge($candidates, $homeData[$key]);
+            }
+        }
+
+        $validSlugs = collect($candidates)->pluck('slug')->filter()->unique()->values();
+
+        if ($validSlugs->isNotEmpty()) {
+            return redirect()->route('blog.show', $validSlugs->random());
+        }
+
+        return redirect()->route('home');
+    }
+
     public function comment(Request $request, string $slug)
     {
         $request->validate([

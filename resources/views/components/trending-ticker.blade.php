@@ -1,31 +1,33 @@
 @props(['topics' => []])
 
-@if(!empty($topics) && count($topics) > 0)
-<div class="border-b border-slate-200/80 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 text-xs py-2 px-4 sm:px-8">
+<div class="bg-slate-950 text-slate-300 border-b border-slate-800 text-xs py-2 px-4 sm:px-8 relative z-30 shadow-sm select-none">
     <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
-        <div class="flex items-center gap-3 overflow-hidden flex-1">
-            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold tracking-wider uppercase bg-gradient-to-r from-rose-500 to-indigo-600 text-white shrink-0 shadow-sm animate-pulse">
-                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.527.82-1.17 2.13-1.605 3.328-1.04 2.85-2.023 5.485-3.084 6.643C4.84 13.687 4 14.73 4 16a4 4 0 008 0c0-1.27-.84-2.313-1.434-2.98-.59-.663-1.15-1.745-1.63-3.14-.388-1.134-.78-2.353-1.18-3.328.69.96 1.48 1.95 2.37 2.87.26.27.7.27.96 0 .27-.27.27-.71 0-.98-1.2-1.24-2.23-2.6-2.92-3.88.2-.18.42-.35.65-.5.95-.63 2.18-.84 3.38-.41a1 1 0 001.2-1.09z" clip-rule="evenodd"/>
-                </svg>
-                Trending
+        <!-- Left: Live Date & Digital Edition -->
+        <div class="flex items-center gap-3 shrink-0">
+            <span class="inline-flex items-center gap-1.5 text-[11px] font-medium text-slate-300">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span class="hidden md:inline text-slate-400">Funfillia Daily Edition &bull;</span>
+                <span class="font-semibold text-slate-200">{{ now()->format('l, F j, Y') }}</span>
             </span>
-
-            <div class="relative overflow-hidden whitespace-nowrap w-full">
-                <div class="inline-flex items-center gap-6 animate-[marquee_25s_linear_infinite] hover:[animation-play-state:paused]">
-                    @foreach($topics as $topic)
-                        <a href="{{ route('search', ['q' => is_array($topic) ? ($topic['name'] ?? $topic['title'] ?? '') : (string)$topic]) }}" 
-                           class="text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium transition-colors flex items-center gap-2">
-                            <span>#{{ is_array($topic) ? ($topic['name'] ?? $topic['title'] ?? '') : (string)$topic }}</span>
-                        </a>
-                    @endforeach
-                </div>
-            </div>
         </div>
 
-        <div class="hidden sm:flex items-center text-slate-500 dark:text-slate-400 font-medium shrink-0">
-            {{ now()->format('l, M j, Y') }}
+        <!-- Center / Action: Interactive "Surprise Me!" Story Discovery -->
+        <div class="flex items-center justify-center">
+            <a href="{{ route('blog.random') }}" 
+               class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold bg-indigo-500/15 hover:bg-indigo-500/25 text-indigo-300 hover:text-white border border-indigo-500/30 transition-all duration-200 shadow-sm hover:scale-105 active:scale-95 group">
+                <span class="group-hover:rotate-180 transition-transform duration-300 inline-block">🎲</span>
+                <span>Surprise Me!</span>
+                <span class="text-[10px] text-indigo-400/80 hidden sm:inline">&mdash; Random Story</span>
+            </a>
+        </div>
+
+        <!-- Right: Quick Links -->
+        <div class="flex items-center gap-4 shrink-0">
+            <div class="hidden sm:flex items-center gap-3 text-xs text-slate-400 font-medium">
+                <a href="{{ route('pages.about') }}" class="hover:text-white transition-colors">About</a>
+                <span class="text-slate-700">&bull;</span>
+                <a href="{{ route('pages.contact') }}" class="hover:text-white transition-colors">Contact</a>
+            </div>
         </div>
     </div>
 </div>
-@endif

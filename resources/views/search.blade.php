@@ -32,6 +32,9 @@
         @endif
     </div>
 
+    <!-- Search Horizontal Ad -->
+    <x-ad-banner placement="horizontal_ad" />
+
     <!-- Results Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
         <!-- Results Column (8 cols on lg) -->

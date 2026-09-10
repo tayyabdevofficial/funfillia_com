@@ -120,6 +120,9 @@
                 </div>
             @endif
 
+            <!-- Sidebar Vertical Ad -->
+            <x-ad-banner placement="vertical_ad" />
+
             <!-- Recent Stories Widget -->
             @if(!empty($recentBlogs) && count($recentBlogs) > 0)
                 <div class="rounded-3xl bg-white dark:bg-slate-900 p-6 border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">

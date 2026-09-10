@@ -82,6 +82,9 @@
         <!-- Newsletter Subscription Callout -->
         <x-newsletter-box />
 
+        <!-- Feed Horizontal Ad -->
+        <x-ad-banner placement="horizontal_ad" />
+
         <!-- Recent Articles Feed -->
         <section>
             <div class="flex items-center justify-between mb-8">

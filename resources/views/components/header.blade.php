@@ -7,22 +7,34 @@
     <!-- Main Navigation Bar -->
     <nav class="backdrop-blur-md bg-white/90 dark:bg-slate-900/90 border-b border-slate-200/80 dark:border-slate-800 transition-colors">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
+            <div class="flex items-center justify-between h-16 sm:h-18">
                 <!-- Brand Logo -->
                 <div class="flex items-center gap-3 shrink-0">
-                    <a href="{{ route('home') }}" class="flex items-center gap-3 group">
-                        <img src="{{ asset('images/logo.png') }}" alt="Funfillia" class="h-12 w-auto object-contain rounded-xl group-hover:scale-105 transition-transform duration-200">
+                    <a href="{{ route('home') }}" class="flex items-center gap-2 group">
+                        <!-- Compact brand mark on mobile -->
+                        <img src="{{ asset('logo_sm.png') }}" alt="Funfillia" class="h-7 w-7 object-contain rounded-lg block sm:hidden dark:hidden">
+                        <img src="{{ asset('logo_sm-dark.png') }}" alt="Funfillia" class="h-7 w-7 object-contain rounded-lg hidden dark:max-sm:block">
+                        <!-- Full horizontal brand logo for sm and above -->
+                        <img src="{{ asset('logo.png') }}" alt="Funfillia" class="h-7 sm:h-8 w-auto object-contain hidden sm:block dark:hidden group-hover:scale-105 transition-transform duration-200">
+                        <img src="{{ asset('logo-dark.png') }}" alt="Funfillia" class="h-7 sm:h-8 w-auto object-contain hidden dark:sm:block group-hover:scale-105 transition-transform duration-200">
                     </a>
                 </div>
 
                 <!-- Desktop Category Navigation -->
-                <div class="hidden lg:flex items-center gap-1 xl:gap-2">
-                    <a href="{{ route('home') }}" 
-                       class="px-3.5 py-2 rounded-xl text-sm font-semibold transition-all {{ request()->routeIs('home') ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/50' : 'text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800' }}">
-                        Home
+                <div class="hidden lg:flex items-center gap-1 xl:gap-2 overflow-visible">
+                    <a href="{{ route('quizzes.index') }}" 
+                       class="px-3 py-2 rounded-xl text-sm font-bold transition-all inline-flex items-center gap-1.5 whitespace-nowrap shrink-0 {{ request()->routeIs('quizzes.*') ? 'text-pink-600 dark:text-pink-400 bg-pink-50 dark:bg-pink-950/50' : 'text-slate-700 dark:text-slate-300 hover:text-pink-600 dark:hover:text-pink-400 hover:bg-slate-100 dark:hover:bg-slate-800' }}">
+                        <span>Quizzes</span>
+                        <span class="inline-flex items-center px-2 py-0.5 text-[10px] font-black uppercase tracking-wider rounded-md bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-sm whitespace-nowrap leading-tight">🔥 FUN</span>
                     </a>
 
-                    @foreach(collect($categories)->take(6) as $category)
+                    @php
+                        $allCats = collect($categories);
+                        $primaryCats = $allCats->take(4);
+                        $moreCats = $allCats->slice(4);
+                    @endphp
+
+                    @foreach($primaryCats as $category)
                         @php
                             $subCats = $category['sub_categories'] ?? [];
                             $hasSubs = !empty($subCats) && count($subCats) > 0;
@@ -30,11 +42,11 @@
                         @endphp
 
                         @if($hasSubs)
-                            <div class="relative group">
+                            <div class="relative group shrink-0">
                                 <a href="{{ route('category.show', $category['slug'] ?? '#') }}" 
-                                   class="px-3.5 py-2 rounded-xl text-sm font-semibold inline-flex items-center gap-1.5 transition-all {{ $isActive ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/50' : 'text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800' }}">
+                                   class="px-3 py-2 rounded-xl text-sm font-semibold inline-flex items-center gap-1.5 transition-all whitespace-nowrap {{ $isActive ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/50' : 'text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800' }}">
                                     <span>{{ $category['name'] }}</span>
-                                    <svg class="w-4 h-4 text-slate-400 group-hover:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-3.5 h-3.5 text-slate-400 group-hover:rotate-180 transition-transform duration-200 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                                     </svg>
                                 </a>
@@ -43,7 +55,7 @@
                                 <div class="absolute left-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 w-52">
                                     <div class="rounded-2xl bg-white dark:bg-slate-800 shadow-xl border border-slate-200 dark:border-slate-700 p-2 space-y-1">
                                         @foreach($subCats as $sub)
-                                            <a href="{{ route('subcategory.show', $sub['slug'] ?? '#') }}" class="block px-3 py-2 rounded-lg text-sm text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-700/60 transition-colors">
+                                            <a href="{{ route('subcategory.show', $sub['slug'] ?? '#') }}" class="block px-3 py-2 rounded-lg text-sm text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-700/60 transition-colors whitespace-nowrap truncate">
                                                 {{ $sub['name'] }}
                                             </a>
                                         @endforeach
@@ -52,24 +64,46 @@
                             </div>
                         @else
                             <a href="{{ route('category.show', $category['slug'] ?? '#') }}" 
-                               class="px-3.5 py-2 rounded-xl text-sm font-semibold transition-all {{ $isActive ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/50' : 'text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800' }}">
+                               class="px-3 py-2 rounded-xl text-sm font-semibold transition-all whitespace-nowrap shrink-0 {{ $isActive ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/50' : 'text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800' }}">
                                 {{ $category['name'] }}
                             </a>
                         @endif
                     @endforeach
+
+                    @if($moreCats->count() > 0)
+                        <div class="relative group shrink-0">
+                            <button type="button" 
+                                    class="px-3 py-2 rounded-xl text-sm font-semibold inline-flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all whitespace-nowrap">
+                                <span>More</span>
+                                <svg class="w-3.5 h-3.5 text-slate-400 group-hover:rotate-180 transition-transform duration-200 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+
+                            <div class="absolute right-0 sm:left-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 w-56">
+                                <div class="rounded-2xl bg-white dark:bg-slate-800 shadow-2xl border border-slate-200 dark:border-slate-700 p-2 space-y-1">
+                                    @foreach($moreCats as $moreCat)
+                                        <a href="{{ route('category.show', $moreCat['slug'] ?? '#') }}" class="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-700/60 transition-colors whitespace-nowrap truncate">
+                                            {{ $moreCat['name'] }}
+                                        </a>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                 </div>
 
-                <!-- Right Actions: Search trigger, Theme toggle, Mobile button -->
-                <div class="flex items-center gap-2.5">
-                    <!-- Search Trigger Button -->
+                <!-- Right Actions: Search trigger icon button, Theme toggle, Mobile button -->
+                <div class="flex items-center gap-2">
+                    <!-- Search Icon Button -->
                     <button type="button" 
                             onclick="document.getElementById('search-modal').classList.remove('hidden'); document.getElementById('modal-search-input')?.focus();"
-                            class="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 text-sm font-medium transition-colors">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 flex items-center justify-center"
+                            title="Search (⌘K)"
+                            aria-label="Open Search">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
-                        <span class="hidden md:inline">Search...</span>
-                        <kbd class="hidden md:inline-block px-1.5 py-0.5 text-[10px] font-mono bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-700 text-slate-400">⌘K</kbd>
                     </button>
 
                     <!-- Theme Toggle Switch -->
@@ -99,8 +133,9 @@
         
         <!-- Drawer Header -->
         <div class="flex items-center justify-between p-5 border-b border-slate-100 dark:border-slate-800">
-            <a href="{{ route('home') }}" class="flex items-center gap-2" onclick="closeMobileNav()">
-                <img src="{{ asset('images/logo.png') }}" alt="Funfillia" class="h-10 w-auto object-contain">
+            <a href="{{ route('home') }}" class="flex items-center" onclick="closeMobileNav()">
+                <img src="{{ asset('logo.png') }}" alt="Funfillia" class="h-8 w-auto object-contain block dark:hidden">
+                <img src="{{ asset('logo-dark.png') }}" alt="Funfillia" class="h-8 w-auto object-contain hidden dark:block">
             </a>
             <button type="button" 
                     onclick="closeMobileNav()" 
@@ -127,11 +162,15 @@
 
         <!-- Drawer Nav Links & Accordion -->
         <div class="flex-1 overflow-y-auto p-4 space-y-2">
-            <a href="{{ route('home') }}" 
+
+            <a href="{{ route('quizzes.index') }}" 
                onclick="closeMobileNav()"
-               class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-bold text-sm text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
-                <svg class="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-                <span>Home</span>
+               class="flex items-center justify-between px-3.5 py-2.5 rounded-xl font-bold text-sm {{ request()->routeIs('quizzes.*') ? 'bg-pink-50 dark:bg-pink-950/50 text-pink-600 dark:text-pink-400' : 'text-slate-900 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800' }} transition-colors">
+                <div class="flex items-center gap-3">
+                    <span class="text-base">✨</span>
+                    <span>Viral Quizzes & Dares</span>
+                </div>
+                <span class="px-2 py-0.5 text-[10px] font-extrabold rounded-full bg-pink-500 text-white">HOT</span>
             </a>
 
             <div class="pt-2 pb-1">

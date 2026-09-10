@@ -189,6 +189,12 @@ class BloggerApiClient
         return $this->get("/website/metaTags/{$pageName}", [], 30);
     }
 
+    public function getWebsiteAds(): array
+    {
+        // 0s TTL so master toggle and ad changes reflect immediately without stale cache
+        return $this->get('/website/ads', [], 0);
+    }
+
     public function submitComment(array $data): array
     {
         return $this->post('/website/blog/comment/store', $data);
@@ -202,6 +208,45 @@ class BloggerApiClient
     public function submitContactMessage(array $data): array
     {
         return $this->post('/website/contact/store', $data);
+    }
+
+    /**
+     * Viral Entertainment Quizzes & Friendship Challenges API Methods
+     */
+    public function getQuizzes(): array
+    {
+        return $this->get('/website/quizzes', [], 30);
+    }
+
+    public function getQuizDetail(string $slug): array
+    {
+        return $this->get("/website/quizzes/{$slug}", [], 0);
+    }
+
+    public function createQuizChallenge(string $slug, array $data): array
+    {
+        return $this->post("/website/quizzes/{$slug}/create-challenge", $data);
+    }
+
+    public function getQuizChallenge(string $token, bool $isCreator = false): array
+    {
+        $query = $isCreator ? ['creator' => 1] : [];
+        return $this->get("/website/quiz-challenge/{$token}", $query, 0);
+    }
+
+    public function submitQuizChallengeAttempt(string $token, array $data): array
+    {
+        return $this->post("/website/quiz-challenge/{$token}/submit", $data);
+    }
+
+    public function getQuizChallengeLeaderboard(string $token): array
+    {
+        return $this->get("/website/quiz-challenge/{$token}/leaderboard", [], 0);
+    }
+
+    public function getQuizChallengeAttempt(string $token, int $attemptId): array
+    {
+        return $this->get("/website/quiz-challenge/{$token}/attempt/{$attemptId}", [], 0);
     }
 
     /**

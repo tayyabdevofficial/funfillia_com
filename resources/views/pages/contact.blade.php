@@ -5,17 +5,42 @@
 
 @section('content')
 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
-    <!-- Header -->
-    <div class="text-center space-y-4">
-        <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-200/60 dark:border-indigo-800 shadow-sm">
-            ✦ We'd Love to Hear From You
-        </span>
-        <h1 class="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
+    <!-- Centered Professional Hero Header -->
+    <div class="relative text-center py-8 sm:py-12 space-y-4 max-w-3xl mx-auto">
+        <!-- Breadcrumbs -->
+        <nav class="flex items-center justify-center gap-2 text-xs font-semibold text-slate-400">
+            <a href="{{ route('home') }}" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Home</a>
+            <span>/</span>
+            <span class="text-slate-600 dark:text-slate-400">Company</span>
+            <span>/</span>
+            <span class="text-indigo-600 dark:text-indigo-400">Contact</span>
+        </nav>
+
+        <!-- Topic Pill Badge -->
+        <div class="flex justify-center">
+            <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-200/60 dark:border-indigo-800/80 shadow-sm">
+                <span>✉</span>
+                <span>We'd Love to Hear From You</span>
+            </span>
+        </div>
+
+        <!-- Responsive Centered Title -->
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
             Contact Funfillia
         </h1>
-        <p class="text-base text-slate-600 dark:text-slate-300 max-w-lg mx-auto leading-relaxed">
-            Have a viral story tip, hilarious challenge proposal, brand collaboration, or reader feedback? Send us a message and our team will get back to you promptly.
+
+        <!-- Centered Subtitle -->
+        <p class="text-sm sm:text-base text-slate-600 dark:text-slate-400 max-w-xl mx-auto leading-relaxed">
+            Have a viral story tip, challenge proposal, brand collaboration, or reader feedback? Send us a message and our team will get back to you promptly.
         </p>
+
+        <!-- Metadata Chip -->
+        <div class="flex items-center justify-center gap-2 pt-1 text-xs text-slate-400">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700/80">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>Direct Editorial &amp; Reader Support Desk</span>
+            </span>
+        </div>
     </div>
 
     <!-- Contact Cards Grid -->

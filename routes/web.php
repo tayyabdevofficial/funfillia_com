@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MediaProxyController;
 use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\QuizController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
@@ -18,13 +19,24 @@ use Illuminate\Support\Facades\Route;
 // Home
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+// Viral Entertainment Quizzes & Friendship Challenges
+Route::get('/quizzes', [QuizController::class, 'index'])->name('quizzes.index');
+Route::get('/quiz/{slug}', [QuizController::class, 'createChallenge'])->name('quizzes.create');
+Route::post('/quiz/{slug}/create', [QuizController::class, 'storeChallenge'])->name('quizzes.store');
+Route::get('/quiz/challenge/{token}/share', [QuizController::class, 'shareDashboard'])->name('quizzes.challenge.share');
+Route::get('/quiz/challenge/{token}', [QuizController::class, 'takeChallenge'])->name('quizzes.challenge.take');
+Route::post('/quiz/challenge/{token}/submit', [QuizController::class, 'submitAttempt'])->name('quizzes.challenge.submit');
+Route::get('/quiz/challenge/{token}/score', [QuizController::class, 'showScore'])->name('quizzes.challenge.score');
+
 // Media Proxy (Secure obfuscated streaming with local caching)
 Route::get('/media/{token}', [MediaProxyController::class, 'stream'])->name('media.proxy');
+Route::get('/api/v1/website/media/{token}', [MediaProxyController::class, 'stream']);
 
 // Search
 Route::get('/search', [SearchController::class, 'index'])->name('search');
 
 // Blog Detail & Comments
+Route::get('/random-story', [BlogController::class, 'random'])->name('blog.random');
 Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 Route::post('/blog/{slug}/comment', [BlogController::class, 'comment'])->name('blog.comment');
 
@@ -45,3 +57,4 @@ Route::post('/contact-us/submit', [\App\Http\Controllers\PageController::class, 
 Route::get('/privacy-policy', [\App\Http\Controllers\PageController::class, 'privacy'])->name('pages.privacy');
 Route::get('/terms-and-conditions', [\App\Http\Controllers\PageController::class, 'terms'])->name('pages.terms');
 Route::get('/cookie-policy', [\App\Http\Controllers\PageController::class, 'cookies'])->name('pages.cookies');
+
