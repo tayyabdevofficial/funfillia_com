@@ -58,3 +58,7 @@ Route::get('/privacy-policy', [\App\Http\Controllers\PageController::class, 'pri
 Route::get('/terms-and-conditions', [\App\Http\Controllers\PageController::class, 'terms'])->name('pages.terms');
 Route::get('/cookie-policy', [\App\Http\Controllers\PageController::class, 'cookies'])->name('pages.cookies');
 
+// Webhook Instant Cache Purge & Health Heartbeat
+Route::post('/api/webhook/purge-cache', [\App\Http\Controllers\WebhookReceiverController::class, 'handle'])->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class]);
+Route::get('/api/health', [\App\Http\Controllers\WebhookReceiverController::class, 'health'])->name('api.health');
+
