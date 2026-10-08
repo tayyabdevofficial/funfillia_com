@@ -212,6 +212,8 @@
                             </a>
                             <button type="button" 
                                     onclick="toggleMobileAccordion('{{ $accordionId }}', this)" 
+                                    aria-label="Toggle {{ $category['name'] }} subcategories"
+                                    aria-expanded="false"
                                     class="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-transform">
                                 <svg class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -280,9 +282,12 @@
         const el = document.getElementById(id);
         const icon = btn?.querySelector('svg');
         if (el) {
-            el.classList.toggle('hidden');
+            const isHidden = el.classList.toggle('hidden');
+            if (btn) {
+                btn.setAttribute('aria-expanded', !isHidden ? 'true' : 'false');
+            }
             if (icon) {
-                icon.classList.toggle('rotate-180');
+                icon.classList.toggle('rotate-180', !isHidden);
             }
         }
     }
