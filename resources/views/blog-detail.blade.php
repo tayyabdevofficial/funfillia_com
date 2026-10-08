@@ -77,7 +77,7 @@
 
     <!-- Featured Image with Shimmer -->
     <div class="max-w-5xl mx-auto mb-12 rounded-3xl overflow-hidden shadow-2xl shimmer-loading bg-slate-100 dark:bg-slate-800 aspect-[16/9]">
-        <img src="{{ $imageUrl }}" alt="{{ $title }}" class="w-full h-full object-cover">
+        <img src="{{ $imageUrl }}" alt="{{ $title }}" fetchpriority="high" decoding="async" width="1150" height="647" class="w-full h-full object-cover">
     </div>
 
     <!-- Main Content Layout (Article + Sidebar) -->

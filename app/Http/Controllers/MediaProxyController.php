@@ -29,7 +29,7 @@ class MediaProxyController extends Controller
         $cacheDir = storage_path('app/media_cache');
         File::ensureDirectoryExists($cacheDir);
 
-        $cacheFilename = md5($token) . '.webp';
+        $cacheFilename = md5($token . '_v2_q75') . '.webp';
         $cacheFile = $cacheDir . DIRECTORY_SEPARATOR . $cacheFilename;
 
         // Serve cached media immediately with aggressive browser caching
@@ -44,10 +44,37 @@ class MediaProxyController extends Controller
         $media = $this->client->downloadMediaStream($token);
 
         if ($media && !empty($media['body'])) {
-            File::put($cacheFile, $media['body']);
+            $isWebpSaved = false;
 
-            return response($media['body'], 200, [
-                'Content-Type' => $media['contentType'],
+            // Compress & optimize with GD into high-efficiency WebP (quality 75 - Google PageSpeed standard)
+            if (function_exists('imagecreatefromstring') && function_exists('imagewebp') && !str_contains($media['contentType'] ?? '', 'svg')) {
+                try {
+                    $img = @imagecreatefromstring($media['body']);
+                    if ($img !== false) {
+                        imagepalettetotruecolor($img);
+                        imagealphablending($img, true);
+                        imagesavealpha($img, true);
+                        if (@imagewebp($img, $cacheFile, 75)) {
+                            // If re-compressed webp is smaller than original, keep it
+                            if (filesize($cacheFile) < strlen($media['body'])) {
+                                $isWebpSaved = true;
+                            } else {
+                                File::put($cacheFile, $media['body']);
+                            }
+                        }
+                        imagedestroy($img);
+                    }
+                } catch (\Throwable $e) {
+                    $isWebpSaved = false;
+                }
+            }
+
+            if (!$isWebpSaved && !File::exists($cacheFile)) {
+                File::put($cacheFile, $media['body']);
+            }
+
+            return response()->file($cacheFile, [
+                'Content-Type' => $isWebpSaved ? 'image/webp' : ($media['contentType'] ?? 'image/webp'),
                 'Cache-Control' => 'public, max-age=31536000, immutable',
             ]);
         }

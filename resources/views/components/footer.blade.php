@@ -6,7 +6,10 @@
             <!-- Brand & Mission Column (5 cols on lg) -->
             <div class="lg:col-span-4 space-y-5">
                 <a href="{{ route('home') }}" class="inline-block group">
-                    <img src="{{ asset('logo-dark.png') }}" alt="Funfillia" class="h-10 sm:h-12 w-auto object-contain group-hover:scale-105 transition-transform duration-200">
+                    <picture>
+                        <source srcset="{{ asset('logo-dark.webp') }}" type="image/webp">
+                        <img src="{{ asset('logo-dark.png') }}" alt="Funfillia" width="160" height="42" loading="lazy" decoding="async" class="h-10 sm:h-12 w-auto object-contain group-hover:scale-105 transition-transform duration-200">
+                    </picture>
                 </a>
                 
                 <p class="text-sm text-slate-400 leading-relaxed max-w-sm">

@@ -22,7 +22,7 @@
     <div onclick="window.location.href='{{ $detailUrl }}'" 
          class="group flex items-center gap-3.5 p-2.5 rounded-2xl hover:bg-slate-100/80 dark:hover:bg-slate-800/70 transition-all duration-200 cursor-pointer">
         <div class="relative shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden shimmer-loading shadow-sm bg-slate-200 dark:bg-slate-800">
-            <img src="{{ $imageUrl }}" alt="{{ $title }}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+            <img src="{{ $imageUrl }}" alt="{{ $title }}" loading="lazy" decoding="async" width="64" height="64" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
         </div>
         <div class="flex-1 min-w-0">
             @if($categorySlug)
@@ -78,7 +78,7 @@
     <div onclick="window.location.href='{{ $detailUrl }}'"
          class="group bg-white dark:bg-slate-800/80 rounded-3xl border border-slate-200/80 dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 grid grid-cols-1 md:grid-cols-12 gap-0 cursor-pointer">
         <div class="md:col-span-5 relative aspect-[16/10] md:aspect-auto overflow-hidden shimmer-loading bg-slate-100 dark:bg-slate-800">
-            <img src="{{ $imageUrl }}" alt="{{ $title }}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <img src="{{ $imageUrl }}" alt="{{ $title }}" loading="lazy" decoding="async" width="400" height="250" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
             @if($categorySlug)
                 <span class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white/90 dark:bg-slate-900/90 backdrop-blur-md text-indigo-600 dark:text-indigo-400 shadow-sm">
                     {{ $category }}
@@ -125,7 +125,7 @@
              class="group bg-white dark:bg-slate-800/90 rounded-3xl border border-slate-200/80 dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col cursor-pointer">
         <!-- Thumbnail -->
         <div class="relative aspect-[16/10] overflow-hidden shimmer-loading bg-slate-100 dark:bg-slate-800">
-            <img src="{{ $imageUrl }}" alt="{{ $title }}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <img src="{{ $imageUrl }}" alt="{{ $title }}" loading="lazy" decoding="async" width="400" height="250" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
             
             <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
             

@@ -12,11 +12,23 @@
                 <div class="flex items-center gap-3 shrink-0">
                     <a href="{{ route('home') }}" class="flex items-center gap-2 group">
                         <!-- Compact brand mark on mobile -->
-                        <img src="{{ asset('logo_sm.png') }}" alt="Funfillia" class="h-7 w-7 object-contain rounded-lg block sm:hidden dark:hidden">
-                        <img src="{{ asset('logo_sm-dark.png') }}" alt="Funfillia" class="h-7 w-7 object-contain rounded-lg hidden dark:max-sm:block">
+                        <picture class="block sm:hidden dark:hidden shrink-0">
+                            <source srcset="{{ asset('logo_sm.webp') }}" type="image/webp">
+                            <img src="{{ asset('logo_sm.png') }}" alt="Funfillia" width="28" height="28" fetchpriority="high" class="h-7 w-7 object-contain rounded-lg">
+                        </picture>
+                        <picture class="hidden dark:max-sm:block shrink-0">
+                            <source srcset="{{ asset('logo_sm-dark.webp') }}" type="image/webp">
+                            <img src="{{ asset('logo_sm-dark.png') }}" alt="Funfillia" width="28" height="28" fetchpriority="high" class="h-7 w-7 object-contain rounded-lg">
+                        </picture>
                         <!-- Full horizontal brand logo for sm and above -->
-                        <img src="{{ asset('logo.png') }}" alt="Funfillia" class="h-7 sm:h-8 w-auto object-contain hidden sm:block dark:hidden group-hover:scale-105 transition-transform duration-200">
-                        <img src="{{ asset('logo-dark.png') }}" alt="Funfillia" class="h-7 sm:h-8 w-auto object-contain hidden dark:sm:block group-hover:scale-105 transition-transform duration-200">
+                        <picture class="hidden sm:block dark:hidden group-hover:scale-105 transition-transform duration-200 shrink-0">
+                            <source srcset="{{ asset('logo.webp') }}" type="image/webp">
+                            <img src="{{ asset('logo.png') }}" alt="Funfillia" width="135" height="32" fetchpriority="high" class="h-7 sm:h-8 w-auto object-contain">
+                        </picture>
+                        <picture class="hidden dark:sm:block group-hover:scale-105 transition-transform duration-200 shrink-0">
+                            <source srcset="{{ asset('logo-dark.webp') }}" type="image/webp">
+                            <img src="{{ asset('logo-dark.png') }}" alt="Funfillia" width="135" height="32" fetchpriority="high" class="h-7 sm:h-8 w-auto object-contain">
+                        </picture>
                     </a>
                 </div>
 
@@ -134,8 +146,14 @@
         <!-- Drawer Header -->
         <div class="flex items-center justify-between p-5 border-b border-slate-100 dark:border-slate-800">
             <a href="{{ route('home') }}" class="flex items-center" onclick="closeMobileNav()">
-                <img src="{{ asset('logo.png') }}" alt="Funfillia" class="h-8 w-auto object-contain block dark:hidden">
-                <img src="{{ asset('logo-dark.png') }}" alt="Funfillia" class="h-8 w-auto object-contain hidden dark:block">
+                <picture class="block dark:hidden">
+                    <source srcset="{{ asset('logo.webp') }}" type="image/webp">
+                    <img src="{{ asset('logo.png') }}" alt="Funfillia" width="135" height="32" loading="lazy" class="h-8 w-auto object-contain">
+                </picture>
+                <picture class="hidden dark:block">
+                    <source srcset="{{ asset('logo-dark.webp') }}" type="image/webp">
+                    <img src="{{ asset('logo-dark.png') }}" alt="Funfillia" width="135" height="32" loading="lazy" class="h-8 w-auto object-contain">
+                </picture>
             </a>
             <button type="button" 
                     onclick="closeMobileNav()" 

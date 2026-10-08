@@ -67,6 +67,8 @@ class BloggerApiClient
         return $headers;
     }
 
+    protected static array $inMemoryCache = [];
+
     /**
      * Perform an authenticated API request with local caching.
      */
@@ -82,8 +84,16 @@ class BloggerApiClient
 
         $bypassCache = (function_exists('request') && request() && (request()->has('nocache') || request()->has('refresh')));
 
+        // 1. Fast in-memory request-level cache (zero latency for repeated calls in same request)
+        if (!$bypassCache && isset(self::$inMemoryCache[$cacheKey])) {
+            return self::$inMemoryCache[$cacheKey];
+        }
+
+        // 2. Persistent storage cache (file, redis, etc.)
         if ($this->cacheEnabled && $ttl > 0 && !$bypassCache && Cache::has($cacheKey)) {
-            return Cache::get($cacheKey, []);
+            $cached = Cache::get($cacheKey, []);
+            self::$inMemoryCache[$cacheKey] = $cached;
+            return $cached;
         }
 
         try {
@@ -95,6 +105,13 @@ class BloggerApiClient
 
             $response = Http::withHeaders($headers)
                 ->timeout($this->timeout)
+                ->connectTimeout((int) config('blogger.connect_timeout', 3))
+                ->withOptions([
+                    'force_ip_resolve' => 'v4',
+                    'curl' => [
+                        CURLOPT_TCP_NODELAY => 1,
+                    ],
+                ])
                 ->get($url);
 
             if ($response->successful()) {
@@ -102,6 +119,7 @@ class BloggerApiClient
                 if ($this->cacheEnabled && $ttl > 0) {
                     Cache::put($cacheKey, $data, now()->addSeconds($ttl));
                 }
+                self::$inMemoryCache[$cacheKey] = $data;
                 return $data;
             }
 
@@ -131,6 +149,13 @@ class BloggerApiClient
 
             $response = Http::withHeaders($headers)
                 ->timeout($this->timeout)
+                ->connectTimeout((int) config('blogger.connect_timeout', 3))
+                ->withOptions([
+                    'force_ip_resolve' => 'v4',
+                    'curl' => [
+                        CURLOPT_TCP_NODELAY => 1,
+                    ],
+                ])
                 ->post($url, $payload);
 
             return [
@@ -154,28 +179,28 @@ class BloggerApiClient
      */
     public function getHomeData(): array
     {
-        return $this->get('/website/home', [], 60);
+        return $this->get('/website/home', [], (int) config('blogger.cache_ttl', 180));
     }
 
     public function getBlog(string $slug): array
     {
-        // TTL 0 to ensure live view tracking & up-to-date views_count per visitor
-        return $this->get("/website/blogs/{$slug}", [], 0);
+        // 30s cache prevents multiple requests from overloading server while views update
+        return $this->get("/website/blogs/{$slug}", [], 30);
     }
 
     public function getCategoryBlogs(string $slug, int $page = 1): array
     {
-        return $this->get("/website/categoryBlogs/{$slug}", ['page' => $page], 60);
+        return $this->get("/website/categoryBlogs/{$slug}", ['page' => $page], 120);
     }
 
     public function getSubCategoryBlogs(string $slug, int $page = 1): array
     {
-        return $this->get("/website/subCategoryBlogs/{$slug}", ['page' => $page], 60);
+        return $this->get("/website/subCategoryBlogs/{$slug}", ['page' => $page], 120);
     }
 
     public function searchBlogs(string $term, int $page = 1): array
     {
-        return $this->get('/website/search', ['search' => $term, 'page' => $page], 15);
+        return $this->get('/website/search', ['search' => $term, 'page' => $page], 30);
     }
 
     public function getSitemap(): array
@@ -185,14 +210,14 @@ class BloggerApiClient
 
     public function getMetaTags(string $pageName): array
     {
-        // 30s TTL allows rapid reflection of admin SEO edits while protecting server
-        return $this->get("/website/metaTags/{$pageName}", [], 30);
+        // 60s TTL allows rapid reflection of admin SEO edits while protecting server
+        return $this->get("/website/metaTags/{$pageName}", [], 60);
     }
 
     public function getWebsiteAds(): array
     {
-        // 0s TTL so master toggle and ad changes reflect immediately without stale cache
-        return $this->get('/website/ads', [], 0);
+        // 120s TTL keeps ads snappy without slamming the backend on every page load
+        return $this->get('/website/ads', [], 120);
     }
 
     public function submitComment(array $data): array
