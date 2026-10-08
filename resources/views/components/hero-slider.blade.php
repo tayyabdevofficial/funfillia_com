@@ -10,7 +10,10 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
             <!-- Main Spotlight Hero (takes 8 cols on lg) -->
             @php
-                $mainImage = blogger_media_url($mainHero['image_1150x900'] ?? $mainHero['image_850x500'] ?? $mainHero['image_url'] ?? null);
+                $mainImage1150 = !empty($mainHero['image_1150x900']) ? blogger_media_url($mainHero['image_1150x900']) : null;
+                $mainImage850  = !empty($mainHero['image_850x500']) ? blogger_media_url($mainHero['image_850x500']) : null;
+                $mainImage500  = !empty($mainHero['image_500x500']) ? blogger_media_url($mainHero['image_500x500']) : (!empty($mainHero['image_400x300']) ? blogger_media_url($mainHero['image_400x300']) : null);
+                $mainImageDefault = $mainImage850 ?: ($mainImage1150 ?: blogger_media_url($mainHero['image_url'] ?? null));
                 $mainTitle = $mainHero['title'] ?? '';
                 $mainSlug = $mainHero['slug'] ?? '#';
                 $mainDetailUrl = route('blog.show', $mainSlug);
@@ -20,9 +23,24 @@
                 $mainViews = $mainHero['views_count'] ?? (is_array($mainHero['views'] ?? null) ? count($mainHero['views']) : ($mainHero['views'] ?? 0));
             @endphp
             <div onclick="window.location.href='{{ $mainDetailUrl }}'" 
+                 style="aspect-ratio: 16/10;"
                  class="lg:col-span-8 relative rounded-3xl overflow-hidden aspect-[16/10] sm:aspect-[16/9] shadow-2xl group cursor-pointer shimmer-loading bg-slate-900">
 
-                <img src="{{ $mainImage }}" alt="{{ $mainTitle }}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out">
+                <picture class="absolute inset-0 w-full h-full">
+                    @if($mainImage500)
+                        <source media="(max-width: 640px)" srcset="{{ $mainImage500 }}">
+                    @endif
+                    @if($mainImage850)
+                        <source media="(max-width: 1024px)" srcset="{{ $mainImage850 }}">
+                    @endif
+                    <img src="{{ $mainImageDefault }}" 
+                         alt="{{ $mainTitle }}" 
+                         fetchpriority="high"
+                         decoding="async"
+                         width="850"
+                         height="500"
+                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out">
+                </picture>
                 
                 <!-- Rich Dark Gradient Overlay for optimal readability -->
                 <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent"></div>
@@ -35,24 +53,10 @@
                                 {{ $mainCat }}
                             </span>
                         @endif
-                        <span class="px-3 py-1 rounded-full text-xs font-semibold bg-white/20 text-white backdrop-blur-md">
-                            Featured Spotlight
-                        </span>
                     </div>
 
                     <!-- Bottom Content -->
                     <div class="space-y-3 max-w-2xl">
-                        <div class="flex items-center gap-3 text-xs sm:text-sm text-slate-300 font-medium">
-                            <span>{{ $mainDate }}</span>
-                            @if($mainViews > 0)
-                                <span>&bull;</span>
-                                <span class="flex items-center gap-1.5">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                    <span>{{ number_format((int)$mainViews) }} {{ Str::plural('view', (int)$mainViews) }}</span>
-                                </span>
-                            @endif
-                        </div>
-
                         <h2 class="text-2xl sm:text-4xl font-black text-white leading-tight tracking-tight group-hover:text-rose-300 transition-colors drop-shadow-md">
                             {{ $mainTitle }}
                         </h2>
@@ -63,13 +67,15 @@
                             </p>
                         @endif
 
-                        <div class="pt-2">
-                            <span class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-rose-500 to-indigo-600 hover:from-rose-600 hover:to-indigo-700 text-white font-bold text-xs sm:text-sm shadow-xl transition-all">
-                                <span>Read Full Story</span>
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                </svg>
-                            </span>
+                        <div class="flex items-center gap-3 text-xs sm:text-sm text-slate-300 font-medium">
+                            <span>{{ $mainDate }}</span>
+                            @if($mainViews > 0)
+                                <span>&bull;</span>
+                                <span class="flex items-center gap-1.5">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                    <span>{{ number_format((int)$mainViews) }} {{ Str::plural('view', (int)$mainViews) }}</span>
+                                </span>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -91,7 +97,7 @@
 
                     <div onclick="window.location.href='{{ $subDetailUrl }}'"
                          class="relative flex-1 rounded-3xl overflow-hidden shadow-lg group aspect-[16/9] lg:aspect-auto cursor-pointer shimmer-loading bg-slate-900">
-                        <img src="{{ $subImage }}" alt="{{ $subTitle }}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <img src="{{ $subImage }}" alt="{{ $subTitle }}" loading="lazy" decoding="async" width="400" height="250" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent"></div>
                         <div class="absolute inset-0 p-6 flex flex-col justify-end">
                             @if($subCatSlug)
