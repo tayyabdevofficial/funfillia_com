@@ -150,3 +150,49 @@
 .dark .prose-content a {
     color: #818cf8;
 }
+
+/* Google AdSense Responsive Slot Safety */
+ins.adsbygoogle {
+    display: block !important;
+    width: 100% !important;
+    min-width: 250px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* Initial state: zero vertical space on screen, but full width for AdSense calculations */
+.ad-slot-wrapper {
+    display: block !important;
+    width: 100% !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    border: none !important;
+    clear: both;
+}
+
+/* Reveal smoothly ONLY once the ad is verified filled with real content */
+.ad-slot-wrapper.ad-slot-filled {
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+    margin-top: 1.25rem !important;
+    margin-bottom: 1.25rem !important;
+    overflow: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transition: opacity 0.3s ease-in;
+}
+
+/* Instant CSS collapse for unfilled AdSense units */
+.ad-slot-wrapper.ad-slot-unfilled,
+ins.adsbygoogle[data-ad-status="unfilled"],
+[data-ad-placement]:has(ins.adsbygoogle[data-ad-status="unfilled"]) {
+    display: none !important;
+}
+
