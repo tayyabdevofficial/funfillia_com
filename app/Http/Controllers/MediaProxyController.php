@@ -29,7 +29,7 @@ class MediaProxyController extends Controller
         $cacheDir = storage_path('app/media_cache');
         File::ensureDirectoryExists($cacheDir);
 
-        $cacheFilename = md5($token . '_v2_q75') . '.webp';
+        $cacheFilename = md5($token . '_v3_opt70') . '.webp';
         $cacheFile = $cacheDir . DIRECTORY_SEPARATOR . $cacheFilename;
 
         // Serve cached media immediately with aggressive browser caching
@@ -46,7 +46,7 @@ class MediaProxyController extends Controller
         if ($media && !empty($media['body'])) {
             $isWebpSaved = false;
 
-            // Compress & optimize with GD into high-efficiency WebP (quality 75 - Google PageSpeed standard)
+            // Compress & optimize with GD into high-efficiency WebP (quality 70 - Google PageSpeed standard)
             if (function_exists('imagecreatefromstring') && function_exists('imagewebp') && !str_contains($media['contentType'] ?? '', 'svg')) {
                 try {
                     $img = @imagecreatefromstring($media['body']);
@@ -54,13 +54,24 @@ class MediaProxyController extends Controller
                         imagepalettetotruecolor($img);
                         imagealphablending($img, true);
                         imagesavealpha($img, true);
-                        if (@imagewebp($img, $cacheFile, 75)) {
-                            // If re-compressed webp is smaller than original, keep it
-                            if (filesize($cacheFile) < strlen($media['body'])) {
-                                $isWebpSaved = true;
-                            } else {
-                                File::put($cacheFile, $media['body']);
-                            }
+
+                        // Downscale if image width exceeds max layout requirement (1200px)
+                        $width = imagesx($img);
+                        $height = imagesy($img);
+                        $maxWidth = 1200;
+                        if ($width > $maxWidth && $height > 0) {
+                            $newHeight = (int) round(($height * $maxWidth) / $width);
+                            $resized = imagecreatetruecolor($maxWidth, $newHeight);
+                            imagealphablending($resized, false);
+                            imagesavealpha($resized, true);
+                            imagecopyresampled($resized, $img, 0, 0, 0, 0, $maxWidth, $newHeight, $width, $height);
+                            imagedestroy($img);
+                            $img = $resized;
+                        }
+
+                        // Save with quality 70 (Google PageSpeed / Lighthouse optimal compression threshold)
+                        if (@imagewebp($img, $cacheFile, 70)) {
+                            $isWebpSaved = true;
                         }
                         imagedestroy($img);
                     }

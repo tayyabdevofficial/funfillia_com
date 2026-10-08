@@ -85,7 +85,7 @@
             <div class="lg:col-span-4 flex flex-col gap-6 justify-between">
                 @foreach($secondaryHeroes as $hero)
                     @php
-                        $subImage = blogger_media_url($hero['image_500x500'] ?? $hero['image_400x300'] ?? $hero['image_url'] ?? null);
+                        $subImage = blogger_media_url($hero['image_400x300'] ?? $hero['image_500x500'] ?? $hero['image_url'] ?? null);
                         $subTitle = $hero['title'] ?? '';
                         $subSlug = $hero['slug'] ?? '#';
                         $subDetailUrl = route('blog.show', $subSlug);
