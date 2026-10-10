@@ -27,7 +27,7 @@
         </div>
         <div class="flex-1 min-w-0">
             @if($categorySlug)
-                <span class="inline-block text-[10px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 mb-0.5">
+                <span class="inline-block text-[10px] font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-400 mb-0.5">
                     {{ $category }}
                 </span>
             @endif
@@ -56,7 +56,7 @@
         </div>
         <div class="flex-1 min-w-0">
             @if($categorySlug)
-                <span class="inline-block text-[11px] font-bold uppercase tracking-wider text-rose-600 dark:text-rose-400 mb-1">
+                <span class="inline-block text-[11px] font-bold uppercase tracking-wider text-rose-700 dark:text-rose-400 mb-1">
                     {{ $category }}
                 </span>
             @endif
@@ -81,7 +81,7 @@
         <div class="md:col-span-5 relative aspect-[16/10] md:aspect-auto overflow-hidden shimmer-loading bg-slate-100 dark:bg-slate-800">
             <img src="{{ $imageUrl }}" alt="{{ $title }}" loading="lazy" decoding="async" width="400" height="250" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
             @if($categorySlug)
-                <span class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white/90 dark:bg-slate-900/90 backdrop-blur-md text-indigo-600 dark:text-indigo-400 shadow-sm">
+                <span class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white/90 dark:bg-slate-900/90 backdrop-blur-md text-indigo-700 dark:text-indigo-400 shadow-sm">
                     {{ $category }}
                 </span>
             @endif
@@ -131,7 +131,7 @@
             <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
             
             @if($categorySlug)
-                <span class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white/95 dark:bg-slate-900/95 backdrop-blur-md text-indigo-600 dark:text-indigo-400 shadow-sm">
+                <span class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white/95 dark:bg-slate-900/95 backdrop-blur-md text-indigo-700 dark:text-indigo-400 shadow-sm">
                     {{ $category }}
                 </span>
             @endif

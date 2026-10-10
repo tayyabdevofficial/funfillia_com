@@ -10,10 +10,10 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
             <!-- Main Spotlight Hero (takes 8 cols on lg) -->
             @php
-                $mainImage1150 = !empty($mainHero['image_1150x900']) ? blogger_media_url($mainHero['image_1150x900'], '/images/placeholder.svg', 1150) : null;
-                $mainImage850  = !empty($mainHero['image_850x500']) ? blogger_media_url($mainHero['image_850x500'], '/images/placeholder.svg', 850) : null;
-                $mainImage500  = !empty($mainHero['image_500x500']) ? blogger_media_url($mainHero['image_500x500'], '/images/placeholder.svg', 500) : (!empty($mainHero['image_400x300']) ? blogger_media_url($mainHero['image_400x300'], '/images/placeholder.svg', 500) : null);
-                $mainImageDefault = $mainImage850 ?: ($mainImage1150 ?: blogger_media_url($mainHero['image_url'] ?? null, '/images/placeholder.svg', 850));
+                $rawHeroImage = $mainHero['image_1150x900'] ?? $mainHero['image_850x500'] ?? $mainHero['image_500x500'] ?? $mainHero['image_400x300'] ?? $mainHero['image_url'] ?? null;
+                $mainImage1150 = blogger_media_url(!empty($mainHero['image_1150x900']) ? $mainHero['image_1150x900'] : $rawHeroImage, '/images/placeholder.svg', 1150);
+                $mainImage850  = blogger_media_url(!empty($mainHero['image_850x500']) ? $mainHero['image_850x500'] : $rawHeroImage, '/images/placeholder.svg', 850);
+                $mainImage500  = blogger_media_url(!empty($mainHero['image_500x500']) ? $mainHero['image_500x500'] : (!empty($mainHero['image_400x300']) ? $mainHero['image_400x300'] : $rawHeroImage), '/images/placeholder.svg', 500);
                 $mainTitle = $mainHero['title'] ?? '';
                 $mainSlug = $mainHero['slug'] ?? '#';
                 $mainDetailUrl = route('blog.show', $mainSlug);
@@ -27,13 +27,9 @@
                  class="lg:col-span-8 relative rounded-3xl overflow-hidden aspect-[16/10] sm:aspect-[16/9] shadow-2xl group cursor-pointer shimmer-loading bg-slate-900">
 
                 <picture class="absolute inset-0 w-full h-full">
-                    @if($mainImage500)
-                        <source media="(max-width: 640px)" srcset="{{ $mainImage500 }}">
-                    @endif
-                    @if($mainImage850)
-                        <source media="(max-width: 1024px)" srcset="{{ $mainImage850 }}">
-                    @endif
-                    <img src="{{ $mainImageDefault }}" 
+                    <source media="(max-width: 640px)" srcset="{{ $mainImage500 }}">
+                    <source media="(max-width: 1024px)" srcset="{{ $mainImage850 }}">
+                    <img src="{{ $mainImage500 }}" 
                          alt="{{ $mainTitle }}" 
                          fetchpriority="high"
                          decoding="async"
