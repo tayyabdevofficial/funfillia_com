@@ -17,7 +17,7 @@
                class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold bg-indigo-500/15 hover:bg-indigo-500/25 text-indigo-300 hover:text-white border border-indigo-500/30 transition-all duration-200 shadow-sm hover:scale-105 active:scale-95 group">
                 <span class="group-hover:rotate-180 transition-transform duration-300 inline-block">🎲</span>
                 <span>Surprise Me!</span>
-                <span class="text-[10px] text-indigo-400/80 hidden sm:inline">&mdash; Random Story</span>
+                <span class="text-[10px] text-indigo-200 hidden sm:inline">&mdash; Random Story</span>
             </a>
         </div>
 

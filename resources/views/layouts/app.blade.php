@@ -4,6 +4,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Preload LCP Hero Image for Instant 0ms Load Delay Discovery -->
+    @if(request()->routeIs('home') && !empty($headerSliderBlogs[0]))
+        @php
+            $lcpHero = $headerSliderBlogs[0];
+            $lcpRawImg = $lcpHero['image_500x500'] ?? $lcpHero['image_400x300'] ?? $lcpHero['image_850x500'] ?? $lcpHero['image_1150x900'] ?? $lcpHero['image_url'] ?? null;
+            $lcpMobileUrl = blogger_media_url($lcpRawImg, '/images/placeholder.svg', 500);
+            $lcpDesktopUrl = blogger_media_url($lcpRawImg, '/images/placeholder.svg', 850);
+        @endphp
+        <link rel="preload" as="image" href="{{ $lcpMobileUrl }}" media="(max-width: 640px)" fetchpriority="high">
+        <link rel="preload" as="image" href="{{ $lcpDesktopUrl }}" media="(min-width: 641px)" fetchpriority="high">
+    @endif
     
     <!-- Instant Zero-Flicker Dark/Light Theme Script -->
     <script>
@@ -69,18 +81,6 @@
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
     <link rel="manifest" href="{{ asset('site.webmanifest') }}">
     <meta name="theme-color" content="#6366f1">
-
-    <!-- Preload LCP Hero Image for Instant Rendering & Zero Resource Load Delay -->
-    @if(request()->routeIs('home') && !empty($headerSliderBlogs[0]))
-        @php
-            $lcpHero = $headerSliderBlogs[0];
-            $lcpRawImg = $lcpHero['image_500x500'] ?? $lcpHero['image_400x300'] ?? $lcpHero['image_850x500'] ?? $lcpHero['image_1150x900'] ?? $lcpHero['image_url'] ?? null;
-            $lcpMobileUrl = blogger_media_url($lcpRawImg, '/images/placeholder.svg', 500);
-            $lcpDesktopUrl = blogger_media_url($lcpRawImg, '/images/placeholder.svg', 850);
-        @endphp
-        <link rel="preload" as="image" href="{{ $lcpMobileUrl }}" media="(max-width: 640px)" fetchpriority="high">
-        <link rel="preload" as="image" href="{{ $lcpDesktopUrl }}" media="(min-width: 641px)" fetchpriority="high">
-    @endif
 
     <!-- Global AdSense & AMP Auto-Ads Scripts (Deferred for Maximum PageSpeed & Zero-Reflow) -->
     @if($adsEnabled ?? false)
