@@ -134,18 +134,18 @@
         </div>
 
         <!-- Bottom Copyright & Quick Actions -->
-        <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+        <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
             <div class="flex items-center gap-2">
                 <p>&copy; {{ date('Y') }} Funfillia Media Network. All rights reserved.</p>
             </div>
 
             <div class="flex items-center gap-4 text-xs">
-                <a href="{{ route('pages.privacy') }}" class="hover:text-slate-300 transition-colors">Privacy</a>
-                <span class="text-slate-700">&bull;</span>
-                <a href="{{ route('pages.terms') }}" class="hover:text-slate-300 transition-colors">Terms</a>
-                <span class="text-slate-700">&bull;</span>
-                <a href="{{ route('pages.cookies') }}" class="hover:text-slate-300 transition-colors">Cookies</a>
-                <span class="text-slate-700">&bull;</span>
+                <a href="{{ route('pages.privacy') }}" class="text-slate-400 hover:text-white transition-colors">Privacy</a>
+                <span class="text-slate-600">&bull;</span>
+                <a href="{{ route('pages.terms') }}" class="text-slate-400 hover:text-white transition-colors">Terms</a>
+                <span class="text-slate-600">&bull;</span>
+                <a href="{{ route('pages.cookies') }}" class="text-slate-400 hover:text-white transition-colors">Cookies</a>
+                <span class="text-slate-600">&bull;</span>
                 <button type="button" 
                         onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
                         class="text-indigo-400 hover:text-indigo-300 transition-colors font-semibold inline-flex items-center gap-1">

@@ -26,10 +26,14 @@ class MediaProxyController extends Controller
             return redirect('/images/placeholder.svg');
         }
 
+        $w = (int) $request->query('w', 0);
+        $targetWidth = $w > 0 ? min(1200, max(150, $w)) : 800;
+        $quality = 65; // High-efficiency WebP compression meeting Google PageSpeed savings threshold
+
         $cacheDir = storage_path('app/media_cache');
         File::ensureDirectoryExists($cacheDir);
 
-        $cacheFilename = md5($token . '_v3_opt70') . '.webp';
+        $cacheFilename = md5($token . '_v5_w' . $targetWidth . '_q' . $quality) . '.webp';
         $cacheFile = $cacheDir . DIRECTORY_SEPARATOR . $cacheFilename;
 
         // Serve cached media immediately with aggressive browser caching
@@ -46,7 +50,7 @@ class MediaProxyController extends Controller
         if ($media && !empty($media['body'])) {
             $isWebpSaved = false;
 
-            // Compress & optimize with GD into high-efficiency WebP (quality 70 - Google PageSpeed standard)
+            // Compress & optimize with GD into high-efficiency WebP
             if (function_exists('imagecreatefromstring') && function_exists('imagewebp') && !str_contains($media['contentType'] ?? '', 'svg')) {
                 try {
                     $img = @imagecreatefromstring($media['body']);
@@ -55,22 +59,21 @@ class MediaProxyController extends Controller
                         imagealphablending($img, true);
                         imagesavealpha($img, true);
 
-                        // Downscale if image width exceeds max layout requirement (1200px)
+                        // Downscale if image width exceeds layout requirement
                         $width = imagesx($img);
                         $height = imagesy($img);
-                        $maxWidth = 1200;
-                        if ($width > $maxWidth && $height > 0) {
-                            $newHeight = (int) round(($height * $maxWidth) / $width);
-                            $resized = imagecreatetruecolor($maxWidth, $newHeight);
+                        if ($width > $targetWidth && $height > 0) {
+                            $newHeight = (int) round(($height * $targetWidth) / $width);
+                            $resized = imagecreatetruecolor($targetWidth, $newHeight);
                             imagealphablending($resized, false);
                             imagesavealpha($resized, true);
-                            imagecopyresampled($resized, $img, 0, 0, 0, 0, $maxWidth, $newHeight, $width, $height);
+                            imagecopyresampled($resized, $img, 0, 0, 0, 0, $targetWidth, $newHeight, $width, $height);
                             imagedestroy($img);
                             $img = $resized;
                         }
 
-                        // Save with quality 70 (Google PageSpeed / Lighthouse optimal compression threshold)
-                        if (@imagewebp($img, $cacheFile, 70)) {
+                        // Save with quality 65 (ideal balance of crisp fidelity and low byte weight)
+                        if (@imagewebp($img, $cacheFile, $quality)) {
                             $isWebpSaved = true;
                         }
                         imagedestroy($img);

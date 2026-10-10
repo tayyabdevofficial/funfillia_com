@@ -16,11 +16,11 @@
         <section>
             <div class="flex items-center justify-between mb-8">
                 <div>
-                    <span class="text-xs font-bold uppercase tracking-wider text-rose-500">Editor's Choice</span>
+                    <span class="text-xs font-bold uppercase tracking-wider text-rose-600 dark:text-rose-400">Editor's Choice</span>
                     <h2 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">Featured Highlights</h2>
                 </div>
                 <div class="h-1 flex-1 mx-6 bg-slate-100 dark:bg-slate-800 rounded-full hidden md:block"></div>
-                <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">Curated Daily</span>
+                <span class="text-xs font-semibold text-slate-600 dark:text-slate-400">Curated Daily</span>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">

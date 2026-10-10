@@ -14,7 +14,8 @@
     
     // Resolve image via proxy helper
     $rawImage = $blog['image_400x300'] ?? $blog['image_850x500'] ?? $blog['image_url'] ?? $blog['thumbnail'] ?? null;
-    $imageUrl = blogger_media_url($rawImage);
+    $cardWidth = ($type === 'horizontal' || $type === 'featured') ? 800 : ($type === 'compact' ? 150 : 500);
+    $imageUrl = blogger_media_url($rawImage, '/images/placeholder.svg', $cardWidth);
 @endphp
 
 @if($type === 'compact')
@@ -33,7 +34,7 @@
             <h4 class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                 {{ $title }}
             </h4>
-            <div class="flex items-center gap-3 text-[11px] text-slate-400 mt-1">
+            <div class="flex items-center gap-3 text-[11px] text-slate-600 dark:text-slate-300 mt-1">
                 <span>{{ $date }}</span>
                 @if($viewsCount > 0)
                     <span>&bull;</span>
@@ -50,19 +51,19 @@
     <!-- Numbered item for Today's Top trending ranking -->
     <div onclick="window.location.href='{{ $detailUrl }}'"
          class="group flex items-start gap-4 p-4 rounded-2xl bg-white dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700/50 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer">
-        <div class="text-3xl font-black text-slate-300 dark:text-slate-600 group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition-colors w-9 shrink-0 text-center font-mono">
+        <div class="text-3xl font-black text-slate-500 dark:text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors w-9 shrink-0 text-center font-mono">
             {{ sprintf('%02d', $rank ?? 1) }}
         </div>
         <div class="flex-1 min-w-0">
             @if($categorySlug)
-                <span class="inline-block text-[11px] font-bold uppercase tracking-wider text-rose-500 mb-1">
+                <span class="inline-block text-[11px] font-bold uppercase tracking-wider text-rose-600 dark:text-rose-400 mb-1">
                     {{ $category }}
                 </span>
             @endif
             <h4 class="text-sm font-bold text-slate-900 dark:text-white line-clamp-2 leading-snug group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                 {{ $title }}
             </h4>
-            <div class="flex items-center gap-3 text-xs text-slate-400 mt-2">
+            <div class="flex items-center gap-3 text-xs text-slate-600 dark:text-slate-300 mt-2">
                 <span>{{ $date }}</span>
                 <span>&bull;</span>
                 <span class="flex items-center gap-1">
@@ -87,7 +88,7 @@
         </div>
         <div class="md:col-span-7 p-6 sm:p-8 flex flex-col justify-between">
             <div>
-                <div class="flex items-center gap-3 text-xs text-slate-400 mb-2">
+                <div class="flex items-center gap-3 text-xs text-slate-600 dark:text-slate-300 mb-2">
                     <span>{{ $date }}</span>
                     <span>&bull;</span>
                     <span class="flex items-center gap-1">
@@ -106,7 +107,7 @@
             </div>
 
             <div class="flex items-center justify-between pt-6 mt-4 border-t border-slate-100 dark:border-slate-700/60">
-                <div class="flex items-center gap-2 text-xs text-slate-500">
+                <div class="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-300">
                     <span class="flex items-center gap-1.5">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
                         <span>{{ $commentsCount }} comments</span>
@@ -139,7 +140,7 @@
         <!-- Content Body -->
         <div class="p-6 flex-1 flex flex-col justify-between">
             <div>
-                <div class="flex items-center gap-2 text-xs text-slate-400 mb-2.5">
+                <div class="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-300 mb-2.5">
                     <span>{{ $date }}</span>
                     <span>&bull;</span>
                     <span class="flex items-center gap-1">
@@ -161,7 +162,7 @@
 
             <!-- Footer Meta -->
             <div class="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-700/60 text-xs">
-                <div class="flex items-center gap-1.5 text-slate-400">
+                <div class="flex items-center gap-1.5 text-slate-600 dark:text-slate-300">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                     </svg>

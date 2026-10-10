@@ -10,10 +10,10 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
             <!-- Main Spotlight Hero (takes 8 cols on lg) -->
             @php
-                $mainImage1150 = !empty($mainHero['image_1150x900']) ? blogger_media_url($mainHero['image_1150x900']) : null;
-                $mainImage850  = !empty($mainHero['image_850x500']) ? blogger_media_url($mainHero['image_850x500']) : null;
-                $mainImage500  = !empty($mainHero['image_500x500']) ? blogger_media_url($mainHero['image_500x500']) : (!empty($mainHero['image_400x300']) ? blogger_media_url($mainHero['image_400x300']) : null);
-                $mainImageDefault = $mainImage850 ?: ($mainImage1150 ?: blogger_media_url($mainHero['image_url'] ?? null));
+                $mainImage1150 = !empty($mainHero['image_1150x900']) ? blogger_media_url($mainHero['image_1150x900'], '/images/placeholder.svg', 1150) : null;
+                $mainImage850  = !empty($mainHero['image_850x500']) ? blogger_media_url($mainHero['image_850x500'], '/images/placeholder.svg', 850) : null;
+                $mainImage500  = !empty($mainHero['image_500x500']) ? blogger_media_url($mainHero['image_500x500'], '/images/placeholder.svg', 500) : (!empty($mainHero['image_400x300']) ? blogger_media_url($mainHero['image_400x300'], '/images/placeholder.svg', 500) : null);
+                $mainImageDefault = $mainImage850 ?: ($mainImage1150 ?: blogger_media_url($mainHero['image_url'] ?? null, '/images/placeholder.svg', 850));
                 $mainTitle = $mainHero['title'] ?? '';
                 $mainSlug = $mainHero['slug'] ?? '#';
                 $mainDetailUrl = route('blog.show', $mainSlug);
@@ -85,7 +85,7 @@
             <div class="lg:col-span-4 flex flex-col gap-6 justify-between">
                 @foreach($secondaryHeroes as $hero)
                     @php
-                        $subImage = blogger_media_url($hero['image_400x300'] ?? $hero['image_500x500'] ?? $hero['image_url'] ?? null);
+                        $subImage = blogger_media_url($hero['image_400x300'] ?? $hero['image_500x500'] ?? $hero['image_url'] ?? null, '/images/placeholder.svg', 500);
                         $subTitle = $hero['title'] ?? '';
                         $subSlug = $hero['slug'] ?? '#';
                         $subDetailUrl = route('blog.show', $subSlug);
@@ -97,7 +97,7 @@
 
                     <div onclick="window.location.href='{{ $subDetailUrl }}'"
                          class="relative flex-1 rounded-3xl overflow-hidden shadow-lg group aspect-[16/9] lg:aspect-auto cursor-pointer shimmer-loading bg-slate-900">
-                        <img src="{{ $subImage }}" alt="{{ $subTitle }}" loading="lazy" decoding="async" width="400" height="250" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <img src="{{ $subImage }}" alt="{{ $subTitle }}" decoding="async" width="400" height="250" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent"></div>
                         <div class="absolute inset-0 p-6 flex flex-col justify-end">
                             @if($subCatSlug)
@@ -108,7 +108,7 @@
                             <h3 class="text-base sm:text-lg font-bold text-white leading-snug line-clamp-2 group-hover:text-indigo-300 transition-colors">
                                 {{ $subTitle }}
                             </h3>
-                            <div class="flex items-center gap-2 text-xs text-slate-300/80 mt-2">
+                            <div class="flex items-center gap-2 text-xs text-slate-200 mt-2">
                                 <span>{{ $subDate }}</span>
                                 @if($subViews > 0)
                                     <span>&bull;</span>

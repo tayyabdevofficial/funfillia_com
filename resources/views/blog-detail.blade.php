@@ -54,7 +54,7 @@
         @endif
 
         <!-- Date & Views Meta -->
-        <div class="flex items-center justify-center gap-4 text-xs sm:text-sm text-slate-400 pt-3 flex-wrap">
+        <div class="flex items-center justify-center gap-4 text-xs sm:text-sm text-slate-600 dark:text-slate-400 pt-3 flex-wrap">
             <span class="flex items-center gap-1.5">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                 <span>{{ $publishedDate }}</span>
@@ -86,7 +86,7 @@
         <!-- Social Share Column (Left Sticky on Desktop) -->
         <div class="lg:col-span-1 hidden lg:block">
             <div class="sticky top-28 flex flex-col items-center gap-3">
-                <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-1">Share</span>
+                <span class="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400 tracking-wider mb-1">Share</span>
                 
                 <!-- Twitter / X -->
                 <a href="https://twitter.com/intent/tweet?url={{ urlencode(url()->current()) }}&text={{ urlencode($title) }}" target="_blank" rel="noopener" class="p-2.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-black hover:text-white transition-all shadow-sm" title="Share on X" aria-label="Share on X">
