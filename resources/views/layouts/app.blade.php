@@ -296,10 +296,12 @@
     <!-- Header Navigation -->
     <x-header :categories="$allCategories ?? []" :trendingTopics="$trendingTopics ?? []" />
 
-    <!-- Top Header Ad Placement -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <x-ad-banner placement="header" />
-    </div>
+    <!-- Top Header Ad Placement (On Home page, displayed right after Hero Blogs) -->
+    @if(!request()->routeIs('home'))
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <x-ad-banner placement="header" />
+        </div>
+    @endif
 
     <!-- Main Content Area -->
     <main class="flex-1">

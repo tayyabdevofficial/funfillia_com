@@ -9,6 +9,11 @@
         <x-hero-slider :blogs="$headerSliderBlogs" />
     @endif
 
+    <!-- Top Header Ad Placement (Rendered after Hero Blogs) -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full my-4">
+        <x-ad-banner placement="header" />
+    </div>
+
     <!-- Main Content Container -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16">
 
