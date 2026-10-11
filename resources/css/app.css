@@ -22,26 +22,13 @@
     }
 }
 
-/* Shimmer Animation for Image & Card Loading (GPU-Composited Opacity Pulse) */
-@keyframes shimmer {
-    0%, 100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0.6;
-    }
-}
-
+/* Neutral Placeholder Background (Zero Animation) */
 .shimmer-loading {
     background-color: #f1f5f9;
-    animation: shimmer 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    will-change: opacity;
 }
 
 .dark .shimmer-loading {
     background-color: #1e293b;
-    animation: shimmer 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    will-change: opacity;
 }
 
 /* Custom Scrollbar */
