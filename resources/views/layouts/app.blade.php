@@ -295,12 +295,22 @@
 
     @yield('extra_head')
 
-    <!-- Production Inlined CSS (Zero Render-Blocking Requests & Zero Layout Shift) -->
+    <!-- Production CSS (Graceful Inlined Fallback with Zero 500 Errors) -->
+    @php
+        $inlinedCss = null;
+        try {
+            $inlinedCss = \Illuminate\Support\Facades\Vite::content('resources/css/app.css');
+        } catch (\Throwable $e) {
+            $inlinedCss = null;
+        }
+    @endphp
     @if(file_exists(public_path('hot')))
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @else
-        <style>{!! \Illuminate\Support\Facades\Vite::content('resources/css/app.css') !!}</style>
+    @elseif(!empty($inlinedCss))
+        <style>{!! $inlinedCss !!}</style>
         @vite('resources/js/app.js')
+    @else
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200 antialiased selection:bg-indigo-500 selection:text-white">
