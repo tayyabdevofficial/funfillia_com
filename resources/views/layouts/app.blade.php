@@ -17,20 +17,22 @@
         <link rel="preload" as="image" href="{{ $lcpDesktopUrl }}" media="(min-width: 641px)" fetchpriority="high">
     @endif
 
-    <!-- Preload Critical Primary Font to eliminate Element Render Delay -->
+    <!-- Preload Critical Primary Font and Declare @font-face to eliminate Element Render Delay -->
     @php
         $fontWoff2 = null;
+        $fontCssContent = null;
         try {
             $manifestPath = public_path('build/manifest.json');
             if (file_exists($manifestPath)) {
                 $manifest = json_decode(file_get_contents($manifestPath), true);
-                if (!empty($manifest['_instrument-sans-400-normal-DRC__1Mx.woff2']['file'])) {
-                    $fontWoff2 = asset('build/' . $manifest['_instrument-sans-400-normal-DRC__1Mx.woff2']['file']);
-                } else {
-                    foreach ($manifest as $key => $entry) {
-                        if (str_contains($key, 'instrument-sans-400') && str_ends_with($key, '.woff2')) {
-                            $fontWoff2 = asset('build/' . $entry['file']);
-                            break;
+                foreach ($manifest as $key => $entry) {
+                    if (str_contains($key, 'instrument-sans-400') && str_ends_with($key, '.woff2')) {
+                        $fontWoff2 = asset('build/' . $entry['file']);
+                    }
+                    if (str_contains($key, 'fonts-') && str_ends_with($key, '.css')) {
+                        $fontCssPath = public_path('build/' . $entry['file']);
+                        if (file_exists($fontCssPath)) {
+                            $fontCssContent = file_get_contents($fontCssPath);
                         }
                     }
                 }
@@ -39,6 +41,9 @@
     @endphp
     @if($fontWoff2)
         <link rel="preload" href="{{ $fontWoff2 }}" as="font" type="font/woff2" crossorigin>
+    @endif
+    @if($fontCssContent)
+        <style>{!! $fontCssContent !!}</style>
     @endif
 
     @yield('extra_preloads')

@@ -89,31 +89,29 @@
     <!-- Main Content Layout (Article + Sidebar) -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 max-w-6xl mx-auto">
         
-        <!-- Social Share Column (Left Sticky on Desktop) -->
-        <div class="lg:col-span-1 hidden lg:block">
-            <div class="sticky top-28 flex flex-col items-center gap-3">
-                <span class="text-[10px] uppercase font-bold text-slate-700 dark:text-slate-300 tracking-wider mb-1">Share</span>
-                
-                <!-- Twitter / X -->
-                <a href="https://twitter.com/intent/tweet?url={{ urlencode(url()->current()) }}&text={{ urlencode($title) }}" target="_blank" rel="noopener" class="p-2.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-black hover:text-white transition-all shadow-xs" title="Share on X" aria-label="Share on X">
-                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                </a>
-                
-                <!-- Facebook -->
-                <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url()->current()) }}" target="_blank" rel="noopener" class="p-2.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-blue-600 hover:text-white transition-all shadow-xs" title="Share on Facebook" aria-label="Share on Facebook">
-                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                </a>
-                
-                <!-- WhatsApp -->
-                <a href="https://api.whatsapp.com/send?text={{ urlencode($title . ' ' . url()->current()) }}" target="_blank" rel="noopener" class="p-2.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-emerald-500 hover:text-white transition-all shadow-xs" title="Share on WhatsApp" aria-label="Share on WhatsApp">
-                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
-                </a>
-                
-                <!-- Copy Link Button -->
-                <button type="button" onclick="copyArticleLink()" class="p-2.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-indigo-600 hover:text-white transition-all shadow-xs" title="Copy Link" aria-label="Copy Article Link">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
-                </button>
-            </div>
+        <!-- Social Share Column (Left Sticky on Desktop - Flattened) -->
+        <div class="lg:col-span-1 hidden lg:flex sticky top-28 flex-col items-center gap-3">
+            <span class="text-[10px] uppercase font-bold text-slate-700 dark:text-slate-300 tracking-wider mb-1">Share</span>
+            
+            <!-- Twitter / X -->
+            <a href="https://twitter.com/intent/tweet?url={{ urlencode(url()->current()) }}&text={{ urlencode($title) }}" target="_blank" rel="noopener" class="p-2.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-black hover:text-white transition-all shadow-xs" title="Share on X" aria-label="Share on X">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            
+            <!-- Facebook -->
+            <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url()->current()) }}" target="_blank" rel="noopener" class="p-2.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-blue-600 hover:text-white transition-all shadow-xs" title="Share on Facebook" aria-label="Share on Facebook">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+            
+            <!-- WhatsApp -->
+            <a href="https://api.whatsapp.com/send?text={{ urlencode($title . ' ' . url()->current()) }}" target="_blank" rel="noopener" class="p-2.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-emerald-500 hover:text-white transition-all shadow-xs" title="Share on WhatsApp" aria-label="Share on WhatsApp">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+            </a>
+            
+            <!-- Copy Link Button -->
+            <button type="button" onclick="copyArticleLink()" class="p-2.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-indigo-600 hover:text-white transition-all shadow-xs" title="Copy Link" aria-label="Copy Article Link">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+            </button>
         </div>
 
         <!-- Article Body Column (8 cols on lg) -->
@@ -180,7 +178,7 @@
                     <!-- Dynamic AJAX Status Alert -->
                     <div id="comment-alert" class="hidden p-4 rounded-2xl text-sm font-semibold transition-all"></div>
 
-                    <!-- Comment Form with Custom Captcha & AJAX -->
+                    <!-- Comment Form with Flattened DOM Structure -->
                     <form id="comment-form" action="{{ route('blog.comment', $blog['slug']) }}" method="POST" class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-5 shadow-xs">
                         @csrf
                         <input type="hidden" name="blog_id" value="{{ $blog['id'] }}">
@@ -206,24 +204,18 @@
                             <textarea name="description" rows="4" required placeholder="Write your thoughts..." class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
                         </div>
 
-                        <!-- Custom Security Captcha -->
-                        <div class="p-4 rounded-2xl bg-indigo-50/50 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                            <div class="flex items-center gap-2.5">
-                                <span class="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold text-sm shadow-xs">
-                                    🛡
-                                </span>
-                                <div>
-                                    <span class="text-xs font-bold text-slate-800 dark:text-slate-200 block">Security Verification</span>
-                                    <span class="text-xs text-slate-700 dark:text-slate-300">Calculate: <strong class="text-indigo-700 dark:text-indigo-400 font-mono text-sm">{{ $captchaQuestion ?? '5 + 3' }} = ?</strong></span>
-                                </div>
-                            </div>
-                            <div class="w-full sm:w-36">
-                                <input type="number" 
-                                       name="captcha" 
-                                       required 
-                                       placeholder="Your answer" 
-                                       class="w-full px-3.5 py-2 rounded-xl bg-white dark:bg-slate-800 border border-indigo-200 dark:border-indigo-800 text-sm text-center font-mono font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                            </div>
+                        <!-- Custom Security Captcha (Zero-nesting for optimal DOM depth) -->
+                        <div class="p-4 rounded-2xl bg-indigo-50/50 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/50 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-slate-700 dark:text-slate-300">
+                            <label for="comment-captcha-input" class="flex items-center gap-2.5 font-medium cursor-pointer">
+                                <span class="w-7 h-7 rounded-lg bg-indigo-600 text-white inline-flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">🛡</span>
+                                Security Check: <strong class="text-indigo-700 dark:text-indigo-400 font-mono text-sm">{{ $captchaQuestion ?? '5 + 3' }} = ?</strong>
+                            </label>
+                            <input type="number" 
+                                   id="comment-captcha-input" 
+                                   name="captcha" 
+                                   required 
+                                   placeholder="Answer" 
+                                   class="w-full sm:w-32 px-3.5 py-2 rounded-xl bg-white dark:bg-slate-800 border border-indigo-200 dark:border-indigo-800 text-sm text-center font-mono font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         </div>
 
                         <button type="submit" 
@@ -235,7 +227,7 @@
 
                     <!-- Existing Comments Container -->
                     <div id="comments-list" class="space-y-4">
-                        @foreach($comments as $comment)
+                        @foreach(collect($comments)->take(4) as $comment)
                             <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 space-y-2 shadow-xs">
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center gap-2.5">
@@ -275,7 +267,7 @@
             <!-- Sidebar Vertical Display Ad -->
             <x-ad-banner placement="vertical_ad" />
 
-            <!-- Recent Stories Widget -->
+            <!-- Recent Stories Widget (Optimized DOM count) -->
             @if(!empty($recentBlogs) && count($recentBlogs) > 0)
                 <div class="rounded-3xl bg-white dark:bg-slate-900 p-5 border border-slate-200 dark:border-slate-800 shadow-xs space-y-4">
                     <div class="flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
@@ -283,7 +275,7 @@
                         <p class="text-sm font-black text-slate-900 dark:text-white tracking-tight">Recent Stories</p>
                     </div>
                     <div class="space-y-2 divide-y divide-slate-100 dark:divide-slate-800">
-                        @foreach(collect($recentBlogs)->take(4) as $rec)
+                        @foreach(collect($recentBlogs)->take(3) as $rec)
                             <x-blog-card :blog="$rec" type="compact" />
                         @endforeach
                     </div>
@@ -300,15 +292,15 @@
         <x-ad-banner placement="horizontal_multiplex" />
     </div>
 
-    <!-- Related Articles Grid -->
+    <!-- Related Articles Grid (3 items for optimal DOM) -->
     @if(!empty($relatedBlogs) && count($relatedBlogs) > 0)
         <section class="max-w-6xl mx-auto pt-16 border-t border-slate-200 dark:border-slate-800 mt-16">
             <div class="mb-8">
                 <span class="text-xs font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-400">You Might Also Like</span>
                 <h3 class="text-2xl font-black text-slate-900 dark:text-white">Related Stories</h3>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                @foreach(collect($relatedBlogs)->take(4) as $rel)
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                @foreach(collect($relatedBlogs)->take(3) as $rel)
                     <x-blog-card :blog="$rel" type="grid" />
                 @endforeach
             </div>

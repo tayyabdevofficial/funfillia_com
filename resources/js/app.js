@@ -42,38 +42,18 @@ function showToast(message) {
     }, 2800);
 }
 
-// Reading Progress Bar (cached measurements with rAF)
+// Reading Progress Bar (Zero forced-reflow on load)
 function initReadingProgress() {
     const progressBar = document.getElementById('reading-progress-bar');
-    const article = document.querySelector('article');
-    if (!progressBar || !article) return;
-
-    let articleTop = 0;
-    let articleHeight = 0;
-    let maxScroll = 0;
-
-    function measure() {
-        articleTop = article.offsetTop;
-        articleHeight = article.offsetHeight;
-        maxScroll = Math.max(1, articleHeight - window.innerHeight);
-    }
-
-    measure();
-    window.addEventListener('resize', measure, { passive: true });
+    if (!progressBar) return;
 
     let isProgressTicking = false;
     window.addEventListener('scroll', () => {
         if (!isProgressTicking) {
             window.requestAnimationFrame(() => {
-                const scrollY = window.scrollY;
-                if (scrollY < articleTop) {
-                    progressBar.style.width = '0%';
-                } else if (scrollY > articleTop + maxScroll) {
-                    progressBar.style.width = '100%';
-                } else {
-                    const percent = ((scrollY - articleTop) / maxScroll) * 100;
-                    progressBar.style.width = `${Math.min(100, Math.max(0, percent))}%`;
-                }
+                const max = (document.documentElement.scrollHeight - window.innerHeight) || 1;
+                const percent = (window.scrollY / max) * 100;
+                progressBar.style.width = `${Math.min(100, Math.max(0, percent))}%`;
                 isProgressTicking = false;
             });
             isProgressTicking = true;
