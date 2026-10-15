@@ -42,30 +42,46 @@ function showToast(message) {
     }, 2800);
 }
 
-// Reading Progress Bar
+// Reading Progress Bar (cached measurements with rAF)
 function initReadingProgress() {
     const progressBar = document.getElementById('reading-progress-bar');
     const article = document.querySelector('article');
     if (!progressBar || !article) return;
 
-    window.addEventListener('scroll', () => {
-        const articleTop = article.offsetTop;
-        const articleHeight = article.offsetHeight;
-        const windowScroll = window.scrollY;
-        const windowHeight = window.innerHeight;
+    let articleTop = 0;
+    let articleHeight = 0;
+    let maxScroll = 0;
 
-        if (windowScroll < articleTop) {
-            progressBar.style.width = '0%';
-        } else if (windowScroll > articleTop + articleHeight - windowHeight) {
-            progressBar.style.width = '100%';
-        } else {
-            const percent = ((windowScroll - articleTop) / (articleHeight - windowHeight)) * 100;
-            progressBar.style.width = `${Math.min(100, Math.max(0, percent))}%`;
+    function measure() {
+        articleTop = article.offsetTop;
+        articleHeight = article.offsetHeight;
+        maxScroll = Math.max(1, articleHeight - window.innerHeight);
+    }
+
+    measure();
+    window.addEventListener('resize', measure, { passive: true });
+
+    let isProgressTicking = false;
+    window.addEventListener('scroll', () => {
+        if (!isProgressTicking) {
+            window.requestAnimationFrame(() => {
+                const scrollY = window.scrollY;
+                if (scrollY < articleTop) {
+                    progressBar.style.width = '0%';
+                } else if (scrollY > articleTop + maxScroll) {
+                    progressBar.style.width = '100%';
+                } else {
+                    const percent = ((scrollY - articleTop) / maxScroll) * 100;
+                    progressBar.style.width = `${Math.min(100, Math.max(0, percent))}%`;
+                }
+                isProgressTicking = false;
+            });
+            isProgressTicking = true;
         }
-    });
+    }, { passive: true });
 }
 
-// Dynamic Table of Contents with smooth Auto-Scrolling Sidebar
+// Dynamic Table of Contents with Zero-Reflow IntersectionObserver
 function initTableOfContents() {
     const tocContainer = document.getElementById('table-of-contents-list');
     const articleBody = document.querySelector('.prose-content');
@@ -80,6 +96,7 @@ function initTableOfContents() {
 
     tocContainer.innerHTML = '';
     const items = [];
+    const fragment = document.createDocumentFragment();
 
     headings.forEach((heading, index) => {
         let id = heading.id;
@@ -102,8 +119,8 @@ function initTableOfContents() {
         a.dataset.targetId = id;
         a.className = `toc-link block py-1.5 transition-all text-xs sm:text-sm rounded-lg leading-snug ${
             isH3
-                ? 'pl-5 pr-2 text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400'
-                : 'pl-2.5 pr-2 font-medium text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400'
+                ? 'pl-5 pr-2 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400'
+                : 'pl-2.5 pr-2 font-medium text-slate-800 dark:text-slate-200 hover:text-indigo-600 dark:hover:text-indigo-400'
         } line-clamp-2`;
 
         a.addEventListener('click', (e) => {
@@ -117,16 +134,17 @@ function initTableOfContents() {
         });
 
         li.appendChild(a);
-        tocContainer.appendChild(li);
+        fragment.appendChild(li);
         items.push({ id, heading, link: a, isH3 });
     });
+
+    tocContainer.appendChild(fragment);
 
     let currentActiveId = null;
 
     function scrollTocToActive(activeLink) {
         if (!activeLink || !tocContainer) return;
 
-        // If active link is the first item (e.g. Key Takeaways), scroll to top
         if (items.length > 0 && items[0].link === activeLink) {
             tocContainer.scrollTo({ top: 0, behavior: 'smooth' });
             return;
@@ -134,7 +152,6 @@ function initTableOfContents() {
 
         const containerRect = tocContainer.getBoundingClientRect();
         const linkRect = activeLink.getBoundingClientRect();
-
         const currentScroll = tocContainer.scrollTop;
         const relativeTop = linkRect.top - containerRect.top;
         const targetScroll = currentScroll + relativeTop - (containerRect.height / 2) + (linkRect.height / 2);
@@ -155,13 +172,13 @@ function initTableOfContents() {
             if (id === activeId) {
                 activeLink = link;
                 link.classList.add('text-indigo-600', 'dark:text-indigo-400', 'font-bold', 'bg-indigo-50/80', 'dark:bg-indigo-950/50');
-                link.classList.remove('text-slate-500', 'text-slate-700', 'dark:text-slate-400', 'dark:text-slate-300');
+                link.classList.remove('text-slate-600', 'text-slate-800', 'dark:text-slate-400', 'dark:text-slate-200');
             } else {
                 link.classList.remove('text-indigo-600', 'dark:text-indigo-400', 'font-bold', 'bg-indigo-50/80', 'dark:bg-indigo-950/50');
                 if (isH3) {
-                    link.classList.add('text-slate-500', 'dark:text-slate-400');
+                    link.classList.add('text-slate-600', 'dark:text-slate-400');
                 } else {
-                    link.classList.add('text-slate-700', 'dark:text-slate-300');
+                    link.classList.add('text-slate-800', 'dark:text-slate-200');
                 }
             }
         });
@@ -171,55 +188,34 @@ function initTableOfContents() {
         }
     }
 
-    // Scroll spy with fast requestAnimationFrame ticking
-    let isTicking = false;
-
-    function updateActiveOnScroll() {
-        if (items.length === 0) return;
-
-        const scrollY = window.scrollY;
-        const offset = 140; // Height of sticky navbar + top spacing
-
-        // When reading the beginning of the article or before the first heading, activate Key Takeaways / first item
-        const firstHeadingTop = items[0].heading.getBoundingClientRect().top + scrollY;
-        if (scrollY < firstHeadingTop - 80) {
-            setActiveLink(items[0].id);
-            return;
-        }
-
-        let activeId = items[0].id;
-        for (let i = 0; i < items.length; i++) {
-            const hTop = items[i].heading.getBoundingClientRect().top + scrollY;
-            if (scrollY + offset >= hTop) {
-                activeId = items[i].id;
-            } else {
-                break;
+    // Zero-overhead IntersectionObserver for TOC scrollspy
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+            for (let i = 0; i < entries.length; i++) {
+                if (entries[i].isIntersecting) {
+                    setActiveLink(entries[i].target.id);
+                    break;
+                }
             }
-        }
+        }, {
+            rootMargin: '-80px 0px -70% 0px',
+            threshold: 0
+        });
 
-        if (activeId) {
-            setActiveLink(activeId);
-        }
+        headings.forEach(h => observer.observe(h));
     }
-
-    window.addEventListener('scroll', () => {
-        if (!isTicking) {
-            window.requestAnimationFrame(() => {
-                updateActiveOnScroll();
-                isTicking = false;
-            });
-            isTicking = true;
-        }
-    }, { passive: true });
-
-    // Initial check on load
-    updateActiveOnScroll();
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     updateThemeIcons();
     initReadingProgress();
-    initTableOfContents();
+    
+    // Defer TOC building so critical content / LCP renders immediately
+    if ('requestIdleCallback' in window) {
+        requestIdleCallback(initTableOfContents);
+    } else {
+        setTimeout(initTableOfContents, 100);
+    }
 
     // Search modal shortcut (Ctrl+K or Cmd+K)
     window.addEventListener('keydown', (e) => {

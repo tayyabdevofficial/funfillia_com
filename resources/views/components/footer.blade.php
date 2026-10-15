@@ -5,7 +5,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12 border-b border-slate-800/80">
             <!-- Brand & Mission Column (5 cols on lg) -->
             <div class="lg:col-span-4 space-y-5">
-                <a href="{{ route('home') }}" class="inline-block group">
+                <a href="{{ route('home') }}" class="inline-block group" aria-label="Funfillia Homepage">
                     <picture>
                         <source srcset="{{ asset('logo-dark.webp') }}" type="image/webp">
                         <img src="{{ asset('logo-dark.png') }}" alt="Funfillia" width="160" height="42" loading="lazy" decoding="async" class="h-10 sm:h-12 w-auto object-contain group-hover:scale-105 transition-transform duration-200">
@@ -30,9 +30,9 @@
 
             <!-- Explore Categories Column (3 cols on lg) -->
             <div class="lg:col-span-3 space-y-4">
-                <h4 class="text-xs font-bold uppercase tracking-widest text-white border-b border-slate-800 pb-2">
+                <p class="text-xs font-bold uppercase tracking-widest text-white border-b border-slate-800 pb-2">
                     Trending Categories
-                </h4>
+                </p>
                 <ul class="space-y-2 text-sm">
                     @foreach(collect($categories)->take(6) as $cat)
                         <li>
@@ -53,9 +53,9 @@
 
             <!-- Company & Editorial Legal Column (2 cols on lg) -->
             <div class="lg:col-span-2 space-y-4">
-                <h4 class="text-xs font-bold uppercase tracking-widest text-white border-b border-slate-800 pb-2">
+                <p class="text-xs font-bold uppercase tracking-widest text-white border-b border-slate-800 pb-2">
                     Company &amp; Legal
-                </h4>
+                </p>
                 <ul class="space-y-2.5 text-sm">
                     <li>
                         <a href="{{ route('pages.about') }}" class="text-slate-400 hover:text-white transition-colors flex items-center gap-2 group">
@@ -105,7 +105,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                             </svg>
                         </span>
-                        <h4 class="text-sm font-bold text-white tracking-tight">Stay Ahead of Trends</h4>
+                        <p class="text-sm font-bold text-white tracking-tight">Stay Ahead of Trends</p>
                     </div>
 
                     <p class="text-xs text-slate-400 leading-relaxed">

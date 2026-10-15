@@ -1,14 +1,14 @@
-<div id="cookie-consent-banner" class="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:max-w-md z-50 transform transition-all duration-500 translate-y-24 opacity-0 pointer-events-none">
-    <div class="p-6 rounded-3xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200 dark:border-slate-800 shadow-2xl space-y-4">
+<div id="cookie-consent-banner" class="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:max-w-md z-50 transform translate-y-24 opacity-0 pointer-events-none transition-[transform,opacity] duration-500 ease-out" style="will-change: transform, opacity;">
+    <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-4">
         <div class="flex items-start gap-3">
-            <div class="w-10 h-10 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0 text-xl shadow-xs">
+            <div class="w-10 h-10 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 flex items-center justify-center shrink-0 text-xl shadow-xs">
                 🍪
             </div>
             <div>
-                <h4 class="text-sm font-bold text-slate-900 dark:text-white">We Value Your Privacy</h4>
-                <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed mt-1">
+                <p class="text-sm font-bold text-slate-900 dark:text-white">We Value Your Privacy</p>
+                <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mt-1">
                     We use cookies to enhance your browsing experience, provide personalized content, and analyze site performance. Read our 
-                    <a href="{{ route('pages.cookies') }}" class="text-indigo-600 dark:text-indigo-400 font-semibold underline hover:text-indigo-700">Cookie Policy</a>.
+                    <a href="{{ route('pages.cookies') }}" class="text-indigo-700 dark:text-indigo-400 font-semibold underline hover:text-indigo-800">Cookie Policy</a>.
                 </p>
             </div>
         </div>
@@ -32,13 +32,18 @@
     function checkCookieConsent() {
         const consent = localStorage.getItem('funfillia_cookie_consent');
         if (!consent) {
-            setTimeout(() => {
+            const show = () => {
                 const banner = document.getElementById('cookie-consent-banner');
                 if (banner) {
                     banner.classList.remove('translate-y-24', 'opacity-0', 'pointer-events-none');
                     banner.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
                 }
-            }, 1200);
+            };
+            if ('requestIdleCallback' in window) {
+                requestIdleCallback(() => setTimeout(show, 3000));
+            } else {
+                setTimeout(show, 3500);
+            }
         }
     }
 

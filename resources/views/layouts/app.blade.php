@@ -16,7 +16,33 @@
         <link rel="preload" as="image" href="{{ $lcpMobileUrl }}" media="(max-width: 640px)" fetchpriority="high">
         <link rel="preload" as="image" href="{{ $lcpDesktopUrl }}" media="(min-width: 641px)" fetchpriority="high">
     @endif
-    
+
+    <!-- Preload Critical Primary Font to eliminate Element Render Delay -->
+    @php
+        $fontWoff2 = null;
+        try {
+            $manifestPath = public_path('build/manifest.json');
+            if (file_exists($manifestPath)) {
+                $manifest = json_decode(file_get_contents($manifestPath), true);
+                if (!empty($manifest['_instrument-sans-400-normal-DRC__1Mx.woff2']['file'])) {
+                    $fontWoff2 = asset('build/' . $manifest['_instrument-sans-400-normal-DRC__1Mx.woff2']['file']);
+                } else {
+                    foreach ($manifest as $key => $entry) {
+                        if (str_contains($key, 'instrument-sans-400') && str_ends_with($key, '.woff2')) {
+                            $fontWoff2 = asset('build/' . $entry['file']);
+                            break;
+                        }
+                    }
+                }
+            }
+        } catch (\Throwable $e) {}
+    @endphp
+    @if($fontWoff2)
+        <link rel="preload" href="{{ $fontWoff2 }}" as="font" type="font/woff2" crossorigin>
+    @endif
+
+    @yield('extra_preloads')
+
     <style>
         /* Zero Non-Composited Animations Override */
         .shimmer-loading {
@@ -321,7 +347,7 @@
     @endif
 
     <!-- Reading Progress Bar (for article detail pages) -->
-    <div id="reading-progress-bar" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-rose-500 via-purple-500 to-indigo-600 z-50 transition-all duration-75 w-0 pointer-events-none"></div>
+    <div id="reading-progress-bar" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-rose-500 via-purple-500 to-indigo-600 z-50 transition-[width] duration-75 ease-out w-0 pointer-events-none" style="will-change: width;"></div>
 
     <!-- Header Navigation -->
     <x-header :categories="$allCategories ?? []" :trendingTopics="$trendingTopics ?? []" />
@@ -352,12 +378,13 @@
     <!-- Cookie Consent Banner -->
     <x-cookie-consent />
 
-    <!-- Floating Back to Top Button test -->
+    <!-- Floating Back to Top Button -->
     <button type="button" 
             onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
             id="back-to-top"
             aria-label="Back to top"
-            class="fixed bottom-6 left-6 z-40 p-3 rounded-full bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 shadow-xl border border-slate-200 dark:border-slate-700 hover:scale-110 transition-all duration-300 opacity-0 pointer-events-none">
+            class="fixed bottom-6 left-6 z-40 p-3 rounded-full bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 shadow-xl border border-slate-200 dark:border-slate-700 hover:scale-110 transition-[opacity,transform] duration-300 opacity-0 pointer-events-none"
+            style="will-change: transform, opacity;">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
         </svg>

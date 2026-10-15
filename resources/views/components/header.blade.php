@@ -10,7 +10,7 @@
             <div class="flex items-center justify-between h-16 sm:h-18">
                 <!-- Brand Logo -->
                 <div class="flex items-center gap-3 shrink-0">
-                    <a href="{{ route('home') }}" class="flex items-center gap-2 group">
+                    <a href="{{ route('home') }}" class="flex items-center gap-2 group" aria-label="Funfillia Homepage">
                         <!-- Compact brand mark on mobile -->
                         <picture class="block sm:hidden dark:hidden shrink-0">
                             <source srcset="{{ asset('logo_sm.webp') }}" type="image/webp">
@@ -145,7 +145,7 @@
         
         <!-- Drawer Header -->
         <div class="flex items-center justify-between p-5 border-b border-slate-100 dark:border-slate-800">
-            <a href="{{ route('home') }}" class="flex items-center" onclick="closeMobileNav()">
+            <a href="{{ route('home') }}" class="flex items-center" onclick="closeMobileNav()" aria-label="Funfillia Homepage">
                 <picture class="block dark:hidden">
                     <source srcset="{{ asset('logo.webp') }}" type="image/webp">
                     <img src="{{ asset('logo.png') }}" alt="Funfillia" width="135" height="32" loading="lazy" class="h-8 w-auto object-contain">
