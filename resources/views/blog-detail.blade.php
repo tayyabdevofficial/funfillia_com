@@ -387,5 +387,17 @@
             alertBox.classList.remove('hidden');
         });
     });
+
+    // Automatically wrap article tables in a responsive horizontal scroll container
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.prose-content table, .prose table').forEach(function (table) {
+            if (!table.parentElement.classList.contains('table-responsive-wrapper')) {
+                var wrapper = document.createElement('div');
+                wrapper.className = 'table-responsive-wrapper';
+                table.parentNode.insertBefore(wrapper, table);
+                wrapper.appendChild(table);
+            }
+        });
+    });
 </script>
 @endsection

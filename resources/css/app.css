@@ -138,6 +138,135 @@
     color: #818cf8;
 }
 
+/* Responsive, Beautiful Blog Article Tables */
+.table-responsive-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 2.25rem 0;
+    border-radius: 1rem;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+}
+
+.dark .table-responsive-wrapper {
+    border-color: #1e293b;
+    background: #0f172a;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+.prose-content table,
+.prose table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    text-align: left;
+    font-size: 0.9375rem;
+    margin: 2rem 0;
+    border-radius: 1rem;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+}
+
+.dark .prose-content table,
+.dark .prose table {
+    border-color: #1e293b;
+    background: #0f172a;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+.table-responsive-wrapper table {
+    margin: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    min-width: 620px;
+}
+
+.prose-content thead,
+.prose thead {
+    background: #f8fafc;
+}
+
+.dark .prose-content thead,
+.dark .prose thead {
+    background: #1e293b;
+}
+
+.prose-content th,
+.prose th {
+    padding: 1rem 1.25rem;
+    font-weight: 700;
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #1e293b;
+    border-bottom: 2px solid #e2e8f0;
+    white-space: nowrap;
+}
+
+.dark .prose-content th,
+.dark .prose th {
+    color: #f1f5f9;
+    border-bottom-color: #334155;
+}
+
+.prose-content td,
+.prose td {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+    vertical-align: top;
+    line-height: 1.6;
+    font-size: 0.875rem;
+}
+
+.dark .prose-content td,
+.dark .prose td {
+    border-bottom-color: #1e293b;
+    color: #cbd5e1;
+}
+
+.prose-content tbody td:first-child,
+.prose tbody td:first-child {
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.dark .prose-content tbody td:first-child,
+.dark .prose tbody td:first-child {
+    color: #f8fafc;
+}
+
+.prose-content tbody tr:nth-child(even),
+.prose tbody tr:nth-child(even) {
+    background-color: #f8fafc;
+}
+
+.dark .prose-content tbody tr:nth-child(even),
+.dark .prose tbody tr:nth-child(even) {
+    background-color: rgba(30, 41, 59, 0.4);
+}
+
+.prose-content tbody tr:hover,
+.prose tbody tr:hover {
+    background-color: #f1f5f9;
+    transition: background-color 0.15s ease;
+}
+
+.dark .prose-content tbody tr:hover,
+.dark .prose tbody tr:hover {
+    background-color: rgba(51, 65, 85, 0.5);
+}
+
+.prose-content tbody tr:last-child td,
+.prose tbody tr:last-child td {
+    border-bottom: none;
+}
+
 /* Google AdSense Responsive Slot Safety */
 ins.adsbygoogle {
     display: block !important;
