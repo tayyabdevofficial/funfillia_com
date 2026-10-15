@@ -19,7 +19,8 @@
 
     <!-- Preload Critical Primary Font and Declare @font-face to eliminate Element Render Delay -->
     @php
-        $fontWoff2 = null;
+        $fontWoff2_400 = null;
+        $fontWoff2_600 = null;
         $fontCssContent = null;
         try {
             $manifestPath = public_path('build/manifest.json');
@@ -27,7 +28,10 @@
                 $manifest = json_decode(file_get_contents($manifestPath), true);
                 foreach ($manifest as $key => $entry) {
                     if (str_contains($key, 'instrument-sans-400') && str_ends_with($key, '.woff2')) {
-                        $fontWoff2 = asset('build/' . $entry['file']);
+                        $fontWoff2_400 = asset('build/' . $entry['file']);
+                    }
+                    if (str_contains($key, 'instrument-sans-600') && str_ends_with($key, '.woff2')) {
+                        $fontWoff2_600 = asset('build/' . $entry['file']);
                     }
                     if (str_contains($key, 'fonts-') && str_ends_with($key, '.css')) {
                         $fontCssPath = public_path('build/' . $entry['file']);
@@ -39,11 +43,18 @@
             }
         } catch (\Throwable $e) {}
     @endphp
-    @if($fontWoff2)
-        <link rel="preload" href="{{ $fontWoff2 }}" as="font" type="font/woff2" crossorigin>
+    @if($fontWoff2_400)
+        <link rel="preload" href="{{ $fontWoff2_400 }}" as="font" type="font/woff2" crossorigin>
+    @endif
+    @if($fontWoff2_600)
+        <link rel="preload" href="{{ $fontWoff2_600 }}" as="font" type="font/woff2" crossorigin>
     @endif
     @if($fontCssContent)
-        <style>{!! $fontCssContent !!}</style>
+        @php
+            // Strip legacy .woff @font-face rules so modern browsers only request preloaded .woff2
+            $cleanFontCss = preg_replace('/@font-face\s*\{[^}]*format\(["\']woff["\']\)[^}]*\}/is', '', $fontCssContent);
+        @endphp
+        <style>{!! $cleanFontCss !!}</style>
     @endif
 
     @yield('extra_preloads')
