@@ -119,6 +119,16 @@
                     </button>
 
                     <!-- Theme Toggle Switch -->
+                                        <!-- WhatsApp Action Button -->
+                    <a href="https://wa.me/923099700930?text={{ urlencode('Hello, I am reaching out regarding ' . config('site.name') . ' editorial / inquiries.') }}" 
+                       target="_blank" 
+                       rel="noopener noreferrer" 
+                       class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 border border-emerald-300 dark:border-emerald-800 transition-all shadow-xs shrink-0 hover:scale-105" 
+                       title="WhatsApp Editorial Desk (+92 309 9700930)">
+                        <svg class="w-3.5 h-3.5 fill-current text-emerald-600 dark:text-emerald-400 shrink-0" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.311.045-.698.077-1.921-.427-1.442-.593-2.368-2.055-2.439-2.151-.07-.096-.583-.777-.583-1.482 0-.705.37-1.053.501-1.198.131-.144.287-.181.382-.181.096 0 .191.002.274.007.087.004.204-.033.319.243.119.288.406 1.001.443 1.074.037.073.061.16.012.257-.048.096-.073.156-.144.24-.072.083-.153.187-.218.251-.072.072-.148.15-.064.294.084.144.373.615.8 1.001.551.498 1.016.653 1.16.726.144.073.228.064.312-.033.084-.096.36-.419.456-.563.096-.144.192-.12.324-.072.131.048.837.395.981.467.144.073.24.108.275.168.036.06.036.348-.108.753z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.821.487 3.53 1.338 5L2 22l5.132-1.312A9.957 9.957 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18.167c-1.579 0-3.048-.445-4.295-1.216l-.308-.189-3.039.778.812-2.964-.207-.324A8.136 8.136 0 013.833 12c0-4.503 3.664-8.167 8.167-8.167 4.503 0 8.167 3.664 8.167 8.167 0 4.503-3.664 8.167-8.167 8.167z"/></svg>
+                        <span class="hidden xs:inline">WhatsApp</span>
+                    </a>
+
                     <x-theme-toggle />
 
                     <!-- Mobile Hamburger Menu Button -->
@@ -252,7 +262,17 @@
         <!-- Drawer Footer -->
         <div class="p-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-400">
             <span>&copy; {{ date('Y') }} Funfillia</span>
-            <x-theme-toggle />
+                                <!-- WhatsApp Action Button -->
+                    <a href="https://wa.me/923099700930?text={{ urlencode('Hello, I am reaching out regarding ' . config('site.name') . ' editorial / inquiries.') }}" 
+                       target="_blank" 
+                       rel="noopener noreferrer" 
+                       class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 border border-emerald-300 dark:border-emerald-800 transition-all shadow-xs shrink-0 hover:scale-105" 
+                       title="WhatsApp Editorial Desk (+92 309 9700930)">
+                        <svg class="w-3.5 h-3.5 fill-current text-emerald-600 dark:text-emerald-400 shrink-0" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.311.045-.698.077-1.921-.427-1.442-.593-2.368-2.055-2.439-2.151-.07-.096-.583-.777-.583-1.482 0-.705.37-1.053.501-1.198.131-.144.287-.181.382-.181.096 0 .191.002.274.007.087.004.204-.033.319.243.119.288.406 1.001.443 1.074.037.073.061.16.012.257-.048.096-.073.156-.144.24-.072.083-.153.187-.218.251-.072.072-.148.15-.064.294.084.144.373.615.8 1.001.551.498 1.016.653 1.16.726.144.073.228.064.312-.033.084-.096.36-.419.456-.563.096-.144.192-.12.324-.072.131.048.837.395.981.467.144.073.24.108.275.168.036.06.036.348-.108.753z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.821.487 3.53 1.338 5L2 22l5.132-1.312A9.957 9.957 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18.167c-1.579 0-3.048-.445-4.295-1.216l-.308-.189-3.039.778.812-2.964-.207-.324A8.136 8.136 0 013.833 12c0-4.503 3.664-8.167 8.167-8.167 4.503 0 8.167 3.664 8.167 8.167 0 4.503-3.664 8.167-8.167 8.167z"/></svg>
+                        <span class="hidden xs:inline">WhatsApp</span>
+                    </a>
+
+                    <x-theme-toggle />
         </div>
     </div>
 </header>

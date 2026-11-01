@@ -39,4 +39,9 @@ return [
         'twitter_handle' => env('SEO_TWITTER_HANDLE', '@funfillia'),
         'locale' => 'en_US',
     ],
+    'whatsapp' => [
+        'number' => '+92 309 9700930',
+        'raw_number' => '923099700930',
+        'url' => 'https://wa.me/923099700930',
+    ],
 ];

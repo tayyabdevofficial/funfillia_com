@@ -44,12 +44,22 @@
     </div>
 
     <!-- Contact Cards Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-center space-y-2 shadow-sm">
             <span class="text-2xl">✉</span>
             <h4 class="text-sm font-bold text-slate-900 dark:text-white">Email Us</h4>
             <p class="text-xs text-slate-500 dark:text-slate-400">contact@funfillia.com</p>
         </div>
+
+        <a href="https://wa.me/923099700930?text={{ urlencode('Hello ' . config('site.name') . ' team, I am reaching out regarding your blog website.') }}" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="p-6 rounded-3xl bg-emerald-50/70 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 text-center space-y-2 shadow-xs hover:border-emerald-500 hover:scale-105 transition-all group block">
+            <span class="text-2xl">💬</span>
+            <h4 class="text-sm font-bold text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">WhatsApp Chat</h4>
+            <p class="text-xs text-emerald-700 dark:text-emerald-400 font-bold">+92 309 9700930</p>
+            <span class="inline-block text-[10px] font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-900/60 px-2.5 py-0.5 rounded-full">Instant Response</span>
+        </a>
 
         <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-center space-y-2 shadow-sm">
             <span class="text-2xl">⏱</span>
