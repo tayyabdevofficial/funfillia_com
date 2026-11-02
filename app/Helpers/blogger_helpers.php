@@ -71,3 +71,21 @@ if (!function_exists('blogger_format_date')) {
         }
     }
 }
+
+if (!function_exists('clean_blog_html')) {
+    /**
+     * Sanitize article HTML before rendering to prevent XSS.
+     */
+    function clean_blog_html(?string $content): string
+    {
+        if (empty($content)) {
+            return '';
+        }
+
+        if (class_exists(\Mews\Purifier\Facades\Purifier::class)) {
+            return \Mews\Purifier\Facades\Purifier::clean($content);
+        }
+
+        return strip_tags($content, '<p><br><h1><h2><h3><h4><h5><h6><a><strong><em><b><i><u><ul><ol><li><blockquote><code><pre><img><table><thead><tbody><tr><th><td><figure><figcaption><hr><div><span>');
+    }
+}

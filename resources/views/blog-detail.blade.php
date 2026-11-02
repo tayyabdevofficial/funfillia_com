@@ -118,7 +118,7 @@
         <div class="lg:col-span-8 space-y-10">
             <!-- Main HTML Content -->
             <div class="prose-content">
-                {!! $blog['content'] ?? '' !!}
+                {!! clean_blog_html($blog['content'] ?? '') !!}
             </div>
 
             <!-- In-Article Horizontal Ad -->

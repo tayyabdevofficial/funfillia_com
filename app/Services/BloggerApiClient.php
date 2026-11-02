@@ -70,6 +70,19 @@ class BloggerApiClient
     protected static array $inMemoryCache = [];
 
     /**
+     * Invalidate tenant cache by incrementing the tenant's cache version.
+     */
+    public static function purgeTenantCache(?string $apiKey = null): void
+    {
+        $key = $apiKey ?: (string) config('blogger.api_key', '');
+        if ($key) {
+            $ver = (int) Cache::get('blogger_cache_ver_' . $key, 1);
+            Cache::put('blogger_cache_ver_' . $key, $ver + 1, now()->addDays(30));
+        }
+        self::$inMemoryCache = [];
+    }
+
+    /**
      * Perform an authenticated API request with local caching.
      */
     public function get(string $path, array $queryParams = [], ?int $ttl = null): array
@@ -79,10 +92,16 @@ class BloggerApiClient
         $fullUri = $path . $queryString;
         $url = $this->baseUrl . $fullUri;
 
-        $cacheKey = 'blogger_api_' . md5($this->apiKey . '_' . $fullUri);
+        $tenantCacheVer = Cache::get('blogger_cache_ver_' . $this->apiKey, 1);
+        $cacheKey = 'blogger_api_' . md5($this->apiKey . '_' . $tenantCacheVer . '_' . $fullUri);
         $ttl = $ttl ?? $this->defaultTtl;
 
-        $bypassCache = (function_exists('request') && request() && (request()->has('nocache') || request()->has('refresh')));
+        // Protected cache bypass: requires valid token or authorization
+        $bypassSecret = (string) (config('blogger.bypass_token') ?: config('blogger.api_secret', ''));
+        $providedToken = function_exists('request') && request()
+            ? (request()->header('X-Bypass-Cache') ?: request()->input('bypass_token'))
+            : null;
+        $bypassCache = !empty($bypassSecret) && !empty($providedToken) && hash_equals($bypassSecret, (string) $providedToken);
 
         // 1. Fast in-memory request-level cache (zero latency for repeated calls in same request)
         if (!$bypassCache && isset(self::$inMemoryCache[$cacheKey])) {
