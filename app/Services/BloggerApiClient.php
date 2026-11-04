@@ -82,7 +82,7 @@ class BloggerApiClient
         $cacheKey = 'blogger_api_' . md5($this->apiKey . '_' . $fullUri);
         $ttl = $ttl ?? $this->defaultTtl;
 
-        $bypassCache = (function_exists('request') && request() && (request()->has('nocache') || request()->has('refresh')));
+        $bypassCache = $this->shouldBypassCache();
 
         // 1. Fast in-memory request-level cache (zero latency for repeated calls in same request)
         if (!$bypassCache && isset(self::$inMemoryCache[$cacheKey])) {
@@ -118,6 +118,7 @@ class BloggerApiClient
                 $data = $response->json() ?? [];
                 if ($this->cacheEnabled && $ttl > 0) {
                     Cache::put($cacheKey, $data, now()->addSeconds($ttl));
+                    $this->registerCacheKey($cacheKey);
                 }
                 self::$inMemoryCache[$cacheKey] = $data;
                 return $data;
@@ -275,6 +276,76 @@ class BloggerApiClient
     }
 
     /**
+     * Milestone 0: registry of every persistent cache key written for this
+     * tenant, so a webhook purge can forget exactly this tenant's keys
+     * instead of flushing the whole cache store.
+     */
+    protected const CACHE_KEY_REGISTRY = 'blogger_api_key_registry';
+
+    protected function registerCacheKey(string $cacheKey): void
+    {
+        try {
+            $keys = Cache::get(self::CACHE_KEY_REGISTRY, []);
+            if (!is_array($keys)) {
+                $keys = [];
+            }
+            if (!in_array($cacheKey, $keys, true)) {
+                $keys[] = $cacheKey;
+                Cache::forever(self::CACHE_KEY_REGISTRY, $keys);
+            }
+        } catch (\Throwable $e) {
+            Log::warning('BloggerApiClient: failed to register cache key: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Milestone 0: tenant-scoped cache purge (replaces the old global
+     * Cache::flush() webhook behaviour).
+     */
+    public function purgeTenantCache(): void
+    {
+        $keys = Cache::get(self::CACHE_KEY_REGISTRY, []);
+        if (is_array($keys)) {
+            foreach ($keys as $key) {
+                Cache::forget($key);
+                unset(self::$inMemoryCache[$key]);
+            }
+        }
+        Cache::forget(self::CACHE_KEY_REGISTRY);
+    }
+
+    /**
+     * Milestone 0: the public ?nocache / ?refresh cache bypass is an
+     * origin-load / DoS amplification risk, so it is only honoured for
+     * signed requests (HMAC-SHA256 of the request URI with the API secret)
+     * or in the local environment. Unsigned requests silently ignore it.
+     */
+    protected function shouldBypassCache(): bool
+    {
+        if (!function_exists('request') || !request()) {
+            return false;
+        }
+
+        $req = request();
+        if (!($req->has('nocache') || $req->has('refresh'))) {
+            return false;
+        }
+
+        if (function_exists('app') && app()->environment('local')) {
+            return true;
+        }
+
+        $signature = (string) $req->header('X-AutomateWrite-Signature', '');
+        if ($this->apiSecret === '' || $signature === '') {
+            return false;
+        }
+
+        $expected = hash_hmac('sha256', $req->getRequestUri(), $this->apiSecret);
+
+        return hash_equals($expected, $signature);
+    }
+
+    /**
      * Download binary media stream for proxying.
      */
     public function downloadMediaStream(string $token): ?array
@@ -302,3 +373,4 @@ class BloggerApiClient
         return null;
     }
 }
+
