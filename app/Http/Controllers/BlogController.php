@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\BloggerApiClient;
+use App\Support\HtmlSanitizer;
 use Illuminate\Http\Request;
 
 class BlogController extends Controller
@@ -23,6 +24,12 @@ class BlogController extends Controller
         }
 
         $blog = $data['blog'];
+
+        // Milestone 0: article body HTML comes from tenant/AI-authored
+        // content and is rendered raw in the view — sanitize it first.
+        if (isset($blog['content']) && is_string($blog['content'])) {
+            $blog['content'] = HtmlSanitizer::sanitize($blog['content']);
+        }
 
         // Generate Math Security Captcha
         $num1 = rand(3, 9);
@@ -107,3 +114,4 @@ class BlogController extends Controller
         return back()->withInput()->with('error', $res['data']['message'] ?? 'Failed to submit comment. Please try again.');
     }
 }
+
